@@ -381,64 +381,64 @@
 
   /* infinite scroll
   -------------------------------------------------------------------------*/
-  var infiniteScroll = function () {
+  // var infiniteScroll = function () {
 
-    var display = $(".loadmore-item").data("display") || 8; 
-    var count = $(".loadmore-item").data("count") || 4; 
+  //   var display = $(".loadmore-item").data("display") || 8; 
+  //   var count = $(".loadmore-item").data("count") || 4; 
     
-    $(".fl-item").slice(0, display).show();
-    $(".fl-item2").slice(0, display).show();
-    $(".fl-item3").slice(0, display).show();
+  //   $(".fl-item").slice(0, display).show();
+  //   $(".fl-item2").slice(0, display).show();
+  //   $(".fl-item3").slice(0, display).show();
 
-    if ($(".scroll-loadmore").length > 0) {
-      $(window).scroll(function () {
-        if (
-          $(window).scrollTop() >=
-          $(document).height() - $(window).height()
-        ) {
-          setTimeout(() => {
-            $(".fl-item:hidden").slice(0, count).show();
-            if ($(".fl-item:hidden").length == 0) {
-              $(".view-more-button").hide();
-            }
-          }, 0);
-        }
-      });
-    }
-    if ($(".loadmore-item").length > 0) {
-      $(".btn-loadmore").on("click", function () {
-        setTimeout(() => {
-          $(".fl-item:hidden").slice(0, count).show();
-          if ($(".fl-item:hidden").length == 0) {
-            $(".view-more-button").hide();
-          }
-        }, 600);
-      });
-    }
-    if ($(".loadmore-item2").length > 0) {
-      $(".btn-loadmore2").on("click", function () {
-        setTimeout(() => {
-          $(".fl-item2:hidden").slice(0, count).show();
-          if ($(".fl-item2:hidden").length == 0) {
-            $(".view-more-button2").hide();
-          }
-        }, 600);
-      });
-    }
-    if ($(".loadmore-item3").length > 0) {
-      $(".btn-loadmore3").on("click", function () {
-        setTimeout(() => {
-          $(".fl-item3:hidden").slice(0, count).show();
-          if ($(".fl-item3:hidden").length == 0) {
-            $(".view-more-button3").hide();
-          }
-        }, 600);
-      });
-    }
+  //   if ($(".scroll-loadmore").length > 0) {
+  //     $(window).scroll(function () {
+  //       if (
+  //         $(window).scrollTop() >=
+  //         $(document).height() - $(window).height()
+  //       ) {
+  //         setTimeout(() => {
+  //           $(".fl-item:hidden").slice(0, count).show();
+  //           if ($(".fl-item:hidden").length == 0) {
+  //             $(".view-more-button").hide();
+  //           }
+  //         }, 0);
+  //       }
+  //     });
+  //   }
+  //   if ($(".loadmore-item").length > 0) {
+  //     $(".btn-loadmore").on("click", function () {
+  //       setTimeout(() => {
+  //         $(".fl-item:hidden").slice(0, count).show();
+  //         if ($(".fl-item:hidden").length == 0) {
+  //           $(".view-more-button").hide();
+  //         }
+  //       }, 600);
+  //     });
+  //   }
+  //   if ($(".loadmore-item2").length > 0) {
+  //     $(".btn-loadmore2").on("click", function () {
+  //       setTimeout(() => {
+  //         $(".fl-item2:hidden").slice(0, count).show();
+  //         if ($(".fl-item2:hidden").length == 0) {
+  //           $(".view-more-button2").hide();
+  //         }
+  //       }, 600);
+  //     });
+  //   }
+  //   if ($(".loadmore-item3").length > 0) {
+  //     $(".btn-loadmore3").on("click", function () {
+  //       setTimeout(() => {
+  //         $(".fl-item3:hidden").slice(0, count).show();
+  //         if ($(".fl-item3:hidden").length == 0) {
+  //           $(".view-more-button3").hide();
+  //         }
+  //       }, 600);
+  //     });
+  //   }
 
 
 
-  };
+  // };
   /* stagger wrap
   -------------------------------------------------------------------------*/
   var staggerWrap = function () {
@@ -956,7 +956,7 @@ var totalVariant = function () {
     btnLoading();
     variantPicker();
     itemCheckbox();
-    infiniteScroll();
+    // infiniteScroll();
     staggerWrap();
     clickModalSecond();
     scrollProgress();

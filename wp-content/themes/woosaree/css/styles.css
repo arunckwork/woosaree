@@ -17621,7 +17621,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   .tf-product-buyx-gety .buyx-gety-heading::after, .tf-product-buyx-gety .buyx-gety-heading::before {
     width: 60px;
   }
-}
+
 @media (min-width: 992px) {
   .tf-grid-layout.lg-col-2 {
     grid-template-columns: 1fr 1fr;

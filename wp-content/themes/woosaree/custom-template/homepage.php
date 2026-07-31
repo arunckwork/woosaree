@@ -9,10 +9,27 @@ get_header();
                 data-centered="false" data-space="0" data-loop="true" data-auto-play="true" data-delay="2000"
                 data-speed="1000">
                 <div class="swiper-wrapper">
+                    <?php
+
+$args = array(
+    'post_type' => 'home_slider',
+    'posts_per_page' => -1,
+    'orderby' => 'menu_order',
+    'order' => 'ASC'
+);
+
+$slider = new WP_Query($args);
+
+if($slider->have_posts()) :
+
+    while($slider->have_posts()) :
+        $slider->the_post();
+
+?>
                     <div class="swiper-slide">
                         <a href="shop-default.html" class="wrap-slider">
-                            <img class="lazyload" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/dome5-banner1.jpg"
-                                src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/dome5-banner1.jpg" alt="hp-slideshow-01">
+                            <img class="lazyload" data-src="<?php echo get_the_post_thumbnail_url(get_the_ID(),'full'); ?>" alt="<?php the_title(); ?>"
+                                src="<?php echo get_the_post_thumbnail_url(get_the_ID(),'full'); ?>" alt="<?php the_title(); ?>" alt="hp-slideshow-01">
                             <div class="box-content">
                                 <!-- <div class="container">
                                     <p class="fade-item fade-item-1 subheading fw-7 tex">THE ALL-NEW SUMMER COLLECTION
@@ -26,39 +43,15 @@ get_header();
                             </div>
                         </a>
                     </div>
-                    <div class="swiper-slide">
-                        <a href="shop-default.html" class="wrap-slider">
-                            <img class="lazyload" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/dome5-banner2.jpg"
-                                src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/dome5-banner2.jpg" alt="hp-slideshow-02">
-                            <div class="box-content">
-                                <!-- <div class="container">
-                                    <p class="fade-item fade-item-1 subheading fw-7">MAKES EVERY MOMENT</p>
-                                    <h2 class="fade-item fade-item-2 fw-6 heading">Pour in Quality</h2>
-                                    <div class="fade-item fade-item-3">
-                                        <span class="tf-btn btn-light-icon animate-hover-btn btn-xl radius-60"><span>Shop
-                                                collection</span><i class="icon icon-arrow-right"></i></span>
-                                    </div>
-                                </div> -->
-                            </div>
-                        </a>
-                    </div>
-                    <!-- <div class="swiper-slide">
-                        <a href="shop-default.html" class="wrap-slider">
-                            <img class="lazyload" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/img/fashion-slideshow-02.jpg"
-                                src="<?php echo get_stylesheet_directory_uri(); ?>/images/img/fashion-slideshow-02.jpg" alt="hp-slideshow-03">
-                            <div class="box-content">
-                                <div class="container">
-                                    <p class="fade-item fade-item-1 subheading fw-7">MODERN DESIGNS FOR EVERY OCCASION
-                                    </p>
-                                    <h2 class="fade-item fade-item-2 fw-6 heading">Drink in Style</h2>
-                                    <div class="fade-item fade-item-3">
-                                        <span class="tf-btn btn-light-icon animate-hover-btn btn-xl radius-60"><span>Shop
-                                                collection</span><i class="icon icon-arrow-right"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div> -->
+                   <?php
+
+    endwhile;
+
+    wp_reset_postdata();
+
+endif;
+
+?>
                 </div>
             </div>
             <div class="wrap-pagination">
@@ -73,16 +66,41 @@ get_header();
             <div class="container">
                 <div class="tf-categories-wrap">
                     <div class="tf-categories-container">
+                        <?php
+
+$product_categories = get_terms(array(
+    'taxonomy'   => 'product_cat',
+    'hide_empty' => true,
+    'parent'     => 0
+));
+
+if (!empty($product_categories) && !is_wp_error($product_categories)) :
+
+    foreach ($product_categories as $category) :
+
+        $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
+        $image = wp_get_attachment_url($thumbnail_id);
+
+?>
                         <div class="collection-item-circle hover-img">
-                            <a href="shop-default.html" class="collection-image img-style">
-                                <img class="lazyload" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/demo5-collection-bnr1.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/demo5-collection-bnr1.jpg" alt="collection-img">
+                            <a href="<?php echo esc_url(get_term_link($category)); ?>" class="collection-image img-style">
+                                 <?php if ($image) : ?>
+                                <img class="lazyload" data-src="<?php echo esc_url($image); ?>"
+                                    src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($category->name); ?>">
+                                     <?php endif; ?>
                             </a>
                             <div class="collection-content text-center">
-                                <a href="shop-default.html" class="link title fw-6">Sarees</a>
+                                <a href="<?php echo esc_url(get_term_link($category)); ?>" class="link title fw-6"><?php echo esc_html($category->name); ?></a>
                             </div>
                         </div>
-                        <div class="collection-item-circle hover-img">
+                        <?php
+
+    endforeach;
+
+endif;
+
+?>
+                        <!-- <div class="collection-item-circle hover-img">
                             <a href="shop-default.html" class="collection-image img-style">
                                 <img class="lazyload" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/21082019120045P19819-2.jpg"
                                     src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/21082019120045P19819-2.jpg" alt="collection-img">
@@ -108,16 +126,16 @@ get_header();
                             <div class="collection-content text-center">
                                 <a href="shop-default.html" class="link title fw-6">Kanjeevaram</a>
                             </div>
-                        </div>
+                        </div> -->
                       
                     </div>
                     <div class="tf-shopall-wrap">
                         <div class="collection-item-circle tf-shopall">
-                            <a href="shop-default.html" class="collection-image img-style tf-shopall-icon">
+                            <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="collection-image img-style tf-shopall-icon">
                                 <i class="icon icon-arrow1-top-left"></i>
                             </a>
                             <div class="collection-content text-center">
-                                <a href="shop-default.html" class="link title fw-6">Shop all</a>
+                                <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="link title fw-6">Shop all</a>
                             </div>
                         </div>
                     </div>
@@ -125,35 +143,6 @@ get_header();
             </div>
         </section>
         <!-- /categories -->
-
-
-
-
-     
-
-     
-       
-       
-       <!-- <section class="flat-spacing-19">
-            <div class="container">
-                <div class="tf-grid-layout md-col-2 tf-img-with-text style-6">
-                    <div class="tf-image-wrap wow fadeInUp" data-wow-delay="0s" style="visibility: visible; animation-delay: 0s; animation-name: fadeInUp;">
-                        <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/saree.avif" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/saree.avif" alt="collection-img">
-                    </div>
-                    <div class="tf-content-wrap text-center w-100 wow fadeInUp" data-wow-delay="0s" style="visibility: visible; animation-delay: 0s; animation-name: fadeInUp;">
-                        <span class="sub-heading text-uppercase fw-7">SUMMER SALE 30% OFF</span>
-                        <div class="heading">Onam Collections</div>
-                        <p class="description">Shop our luxury silk button-up blouses made with ultra-soft, <br class="d-none d-xl-block"> washable silk.</p>
-                        <a href="shop-default.html" class="tf-btn style-2 btn-fill radius-60 animate-hover-btn">Shop collection</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        -->
-        <!-- /Shop Collection -->
-
-
-
 
 
 <!-- Shop -->
@@ -166,24 +155,43 @@ get_header();
                     <p class="sub-title wow fadeInUp" data-wow-delay="0s" style="visibility: visible; animation-delay: 0s; animation-name: fadeInUp;">Shop the Latest Styles: Stay ahead of the
                         curve with our newest arrivals</p>
                 </div>
-                <div class="grid-layout loadmore-item wow fadeInUp" data-wow-delay="0s" data-grid="grid-4" style="visibility: visible; animation-delay: 0s; animation-name: fadeInUp;">
+                <div class="grid-layout loadmore-item wow fadeInUp" data-wow-delay="0s" data-grid="grid-4" style="visibility: visible; animation-delay: 0s; animation-name: fadeInUp;" id="product-list">
+
+                      <?php
+
+            $args = array(
+                'post_type' => 'product',
+                'posts_per_page' => 8,
+                'post_status' => 'publish'
+            );
+
+            $products = new WP_Query($args);
+
+            if ($products->have_posts()) :
+
+                while ($products->have_posts()) :
+                    $products->the_post();
+
+                    global $product;
+
+            ?>
                     <!-- card product 1 -->
                     <div class="card-product fl-item" style="display: block;">
                         <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" alt="image-product">
+                            <a href="<?php the_permalink(); ?>" class="product-img">
+                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" alt="image-product">
+                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" alt="image-product">
                             </a>
                             <div class="list-product-btn">
                                 <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
                                     <span class="icon icon-bag"></span>
                                     <span class="tooltip">Quick Add</span>
                                 </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
+                                <!-- <a href="#" class="box-icon bg_white wishlist btn-icon-action">
                                     <span class="icon icon-heart"></span>
                                     <span class="tooltip">Add to Wishlist</span>
                                     <span class="icon icon-delete"></span>
-                                </a>
+                                </a> -->
                                 <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
                                     <span class="icon icon-compare"></span>
                                     <span class="tooltip">Add to Compare</span>
@@ -197,839 +205,33 @@ get_header();
                         
                         </div>
                         <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">4 Pc Set Black Waistcoat </a>
-                            <span class="price">₹ 16.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Orange</span>
-                                    <span class="swatch-value bg_orange-3"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Black</span>
-                                    <span class="swatch-value bg_dark"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">White</span>
-                                    <span class="swatch-value bg_white"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
+                            <a href="<?php the_permalink(); ?>" class="title link"><?php the_title(); ?> </a>
+                            <span class="price"><?php echo $product->get_price_html(); ?></span>
+                           
                         </div>
                     </div>
-                    <!-- card product 2 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                      
-                            <!-- <div class="countdown-box">
-                                <div class="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s"><div aria-hidden="true" class="countdown__timer"><span class="countdown__item"><span class="countdown__value countdown__value--0 js-countdown__value--0">11</span><span class="countdown__label">d :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--1 js-countdown__value--1">15</span><span class="countdown__label">h :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--2 js-countdown__value--2">50</span><span class="countdown__label">m :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--3 js-countdown__value--3">22</span><span class="countdown__label">s</span></span></div></div>
-                            </div> -->
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">Girls 2 Pc Set  </a>
-                            <span class="price">From ₹ 18.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Brown</span>
-                                    <span class="swatch-value bg_brown"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Purple</span>
-                                    <span class="swatch-value bg_purple"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Green</span>
-                                    <span class="swatch-value bg_light-green"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-
-                      <!-- card product 1 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                      
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">4 Pc Set Black Waistcoat </a>
-                            <span class="price">₹ 16.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Orange</span>
-                                    <span class="swatch-value bg_orange-3"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Black</span>
-                                    <span class="swatch-value bg_dark"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">White</span>
-                                    <span class="swatch-value bg_white"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-                    <!-- card product 2 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                        
-                            <!-- <div class="countdown-box">
-                                <div class="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s"><div aria-hidden="true" class="countdown__timer"><span class="countdown__item"><span class="countdown__value countdown__value--0 js-countdown__value--0">11</span><span class="countdown__label">d :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--1 js-countdown__value--1">15</span><span class="countdown__label">h :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--2 js-countdown__value--2">50</span><span class="countdown__label">m :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--3 js-countdown__value--3">22</span><span class="countdown__label">s</span></span></div></div>
-                            </div> -->
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">Girls 2 Pc Set  </a>
-                            <span class="price">From ₹ 18.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Brown</span>
-                                    <span class="swatch-value bg_brown"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Purple</span>
-                                    <span class="swatch-value bg_purple"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Green</span>
-                                    <span class="swatch-value bg_light-green"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-
-
-                      <!-- card product 1 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                      
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">4 Pc Set Black Waistcoat </a>
-                            <span class="price">₹ 16.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Orange</span>
-                                    <span class="swatch-value bg_orange-3"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Black</span>
-                                    <span class="swatch-value bg_dark"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">White</span>
-                                    <span class="swatch-value bg_white"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-                    <!-- card product 2 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                          
-                            <!-- <div class="countdown-box">
-                                <div class="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s"><div aria-hidden="true" class="countdown__timer"><span class="countdown__item"><span class="countdown__value countdown__value--0 js-countdown__value--0">11</span><span class="countdown__label">d :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--1 js-countdown__value--1">15</span><span class="countdown__label">h :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--2 js-countdown__value--2">50</span><span class="countdown__label">m :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--3 js-countdown__value--3">22</span><span class="countdown__label">s</span></span></div></div>
-                            </div> -->
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">Girls 2 Pc Set  </a>
-                            <span class="price">From ₹ 18.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Brown</span>
-                                    <span class="swatch-value bg_brown"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Purple</span>
-                                    <span class="swatch-value bg_purple"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Green</span>
-                                    <span class="swatch-value bg_light-green"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-
-                      <!-- card product 1 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                     
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">4 Pc Set Black Waistcoat </a>
-                            <span class="price">₹ 16.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Orange</span>
-                                    <span class="swatch-value bg_orange-3"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Black</span>
-                                    <span class="swatch-value bg_dark"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">White</span>
-                                    <span class="swatch-value bg_white"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-                    <!-- card product 2 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                        
-                            <!-- <div class="countdown-box">
-                                <div class="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s"><div aria-hidden="true" class="countdown__timer"><span class="countdown__item"><span class="countdown__value countdown__value--0 js-countdown__value--0">11</span><span class="countdown__label">d :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--1 js-countdown__value--1">15</span><span class="countdown__label">h :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--2 js-countdown__value--2">50</span><span class="countdown__label">m :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--3 js-countdown__value--3">22</span><span class="countdown__label">s</span></span></div></div>
-                            </div> -->
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">Girls 2 Pc Set  </a>
-                            <span class="price">From ₹ 18.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Brown</span>
-                                    <span class="swatch-value bg_brown"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Purple</span>
-                                    <span class="swatch-value bg_purple"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Green</span>
-                                    <span class="swatch-value bg_light-green"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-
-
-                      <!-- card product 1 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                         
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">4 Pc Set Black Waistcoat </a>
-                            <span class="price">₹ 16.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Orange</span>
-                                    <span class="swatch-value bg_orange-3"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Black</span>
-                                    <span class="swatch-value bg_dark"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">White</span>
-                                    <span class="swatch-value bg_white"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-                    <!-- card product 2 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                       
-                            <!-- <div class="countdown-box">
-                                <div class="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s"><div aria-hidden="true" class="countdown__timer"><span class="countdown__item"><span class="countdown__value countdown__value--0 js-countdown__value--0">11</span><span class="countdown__label">d :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--1 js-countdown__value--1">15</span><span class="countdown__label">h :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--2 js-countdown__value--2">50</span><span class="countdown__label">m :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--3 js-countdown__value--3">22</span><span class="countdown__label">s</span></span></div></div>
-                            </div> -->
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">Girls 2 Pc Set  </a>
-                            <span class="price">From ₹ 18.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Brown</span>
-                                    <span class="swatch-value bg_brown"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Purple</span>
-                                    <span class="swatch-value bg_purple"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Green</span>
-                                    <span class="swatch-value bg_light-green"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-
-
-                      <!-- card product 1 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                       
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">4 Pc Set Black Waistcoat </a>
-                            <span class="price">₹ 16.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Orange</span>
-                                    <span class="swatch-value bg_orange-3"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Black</span>
-                                    <span class="swatch-value bg_dark"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">White</span>
-                                    <span class="swatch-value bg_white"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-                    <!-- card product 2 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                        
-                            <!-- <div class="countdown-box">
-                                <div class="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s"><div aria-hidden="true" class="countdown__timer"><span class="countdown__item"><span class="countdown__value countdown__value--0 js-countdown__value--0">11</span><span class="countdown__label">d :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--1 js-countdown__value--1">15</span><span class="countdown__label">h :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--2 js-countdown__value--2">50</span><span class="countdown__label">m :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--3 js-countdown__value--3">22</span><span class="countdown__label">s</span></span></div></div>
-                            </div> -->
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">Girls 2 Pc Set  </a>
-                            <span class="price">From ₹ 18.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Brown</span>
-                                    <span class="swatch-value bg_brown"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Purple</span>
-                                    <span class="swatch-value bg_purple"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Green</span>
-                                    <span class="swatch-value bg_light-green"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-
-
-                      <!-- card product 1 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                          
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">4 Pc Set Black Waistcoat </a>
-                            <span class="price">₹ 16.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Orange</span>
-                                    <span class="swatch-value bg_orange-3"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Black</span>
-                                    <span class="swatch-value bg_dark"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">White</span>
-                                    <span class="swatch-value bg_white"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-                    <!-- card product 2 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                      
-                            <!-- <div class="countdown-box">
-                                <div class="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s"><div aria-hidden="true" class="countdown__timer"><span class="countdown__item"><span class="countdown__value countdown__value--0 js-countdown__value--0">11</span><span class="countdown__label">d :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--1 js-countdown__value--1">15</span><span class="countdown__label">h :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--2 js-countdown__value--2">50</span><span class="countdown__label">m :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--3 js-countdown__value--3">22</span><span class="countdown__label">s</span></span></div></div>
-                            </div> -->
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">Girls 2 Pc Set  </a>
-                            <span class="price">From ₹ 18.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Brown</span>
-                                    <span class="swatch-value bg_brown"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Purple</span>
-                                    <span class="swatch-value bg_purple"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Green</span>
-                                    <span class="swatch-value bg_light-green"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-
-
-                      <!-- card product 1 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-68211_VIOLET_76888_TGC16255552-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                         
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">4 Pc Set Black Waistcoat </a>
-                            <span class="price">₹ 16.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Orange</span>
-                                    <span class="swatch-value bg_orange-3"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Black</span>
-                                    <span class="swatch-value bg_dark"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/black-1.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">White</span>
-                                    <span class="swatch-value bg_white"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-                    <!-- card product 2 -->
-                    <div class="card-product fl-item" style="display: block;">
-                        <div class="card-product-wrapper">
-                            <a href="product-detail.html" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_19710_TGC15229834-pic1.JPG" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/pr/IDN-66339_LIGHT_20PURPLE_74451_TGC15229834-pic2.JPG" alt="image-product">
-                            </a>
-                            <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
-                                    <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
-                                </a>
-                                <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a>
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
-                                    <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
-                                </a>
-                            </div>
-                         
-                            <!-- <div class="countdown-box">
-                                <div class="js-countdown" data-timer="1007500" data-labels="d :,h :,m :,s"><div aria-hidden="true" class="countdown__timer"><span class="countdown__item"><span class="countdown__value countdown__value--0 js-countdown__value--0">11</span><span class="countdown__label">d :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--1 js-countdown__value--1">15</span><span class="countdown__label">h :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--2 js-countdown__value--2">50</span><span class="countdown__label">m :</span></span><span class="countdown__item"><span class="countdown__value countdown__value--3 js-countdown__value--3">22</span><span class="countdown__label">s</span></span></div></div>
-                            </div> -->
-                        </div>
-                        <div class="card-product-info">
-                            <a href="product-detail.html" class="title link">Girls 2 Pc Set  </a>
-                            <span class="price">From ₹ 18.95</span>
-                            <!-- <ul class="list-color-product">
-                                <li class="list-color-item color-swatch active">
-                                    <span class="tooltip">Brown</span>
-                                    <span class="swatch-value bg_brown"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/brown.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Purple</span>
-                                    <span class="swatch-value bg_purple"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/purple.jpg" alt="image-product">
-                                </li>
-                                <li class="list-color-item color-swatch">
-                                    <span class="tooltip">Light Green</span>
-                                    <span class="swatch-value bg_light-green"></span>
-                                    <img class=" ls-is-cached lazyloaded" data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/green.jpg" alt="image-product">
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
+                 
 
 
                   
-                  
+                   <?php
+
+                endwhile;
+
+                wp_reset_postdata();
+
+            endif;
+
+            ?>
 
                     
                 </div>
+                <?php if ($products->max_num_pages > 1) : ?>
                 <div class="tf-pagination-wrap view-more-button text-center">
-                    <button class="tf-btn-loading tf-loading-default style-2 btn-loadmore "><span class="text">Load
+                    <button class="tf-btn-loading tf-loading-default style-2 btn-loadmore " id="load-more-products" data-page="1"><span class="text">Load
                             more</span></button>
                 </div>
+                <?php endif; ?>
             </div>
         </section>
 
