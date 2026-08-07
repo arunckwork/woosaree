@@ -551,41 +551,54 @@
    /* total cart
   -------------------------------------------------------------------------*/
   var totalPriceVariant = function () {
-
-    var basePrice = parseFloat($(".price-on-sale").data("base-price")) || parseFloat($(".price-on-sale").text().replace("$", ""));
     var quantityInput = $(".quantity-product");
-    // quantityInput.on("keydown keypress input", function(event) {
-    //   event.preventDefault();
-    // });
-    $(".color-btn, .size-btn").on("click", function () {
-      var newPrice = parseFloat($(this).data("price")) || basePrice;
-      quantityInput.val(1);
-      $(".price-on-sale").text("$" + newPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-      var totalPrice = newPrice;
-      $(".total-price").text("$" + totalPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-    });
 
-    $(".btn-increase").on("click", function () {
-      var currentQuantity = parseInt(quantityInput.val());
-      quantityInput.val(currentQuantity + 1);
+    function getUnitPrice() {
+      var $priceEl = $(".price-on-sale");
+      var unitPrice = parseFloat($priceEl.attr("data-price"));
+      if (isNaN(unitPrice)) {
+        unitPrice = parseFloat($(".total-price").attr("data-price"));
+      }
+      if (isNaN(unitPrice)) {
+        var cleanText = $priceEl.text().replace(/[^0-9.]/g, "");
+        unitPrice = parseFloat(cleanText) || 0;
+      }
+      return unitPrice;
+    }
+
+    function getCurrencySymbol() {
+      var $priceEl = $(".price-on-sale");
+      var symbol = $priceEl.find(".woocommerce-Price-currencySymbol").text();
+      if (!symbol) {
+        var text = $priceEl.text().trim();
+        var match = text.match(/^[^\d\s]+/);
+        symbol = match ? match[0] : "";
+      }
+      return symbol;
+    }
+
+    function updateTotalPrice() {
+      var unitPrice = getUnitPrice();
+      var quantity = parseInt($(".quantity-product").val()) || 1;
+      var totalPrice = unitPrice * quantity;
+      var symbol = getCurrencySymbol();
+
+      var formatted = totalPrice.toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+      var output = symbol ? (symbol + (symbol.length > 1 ? " " : "") + formatted) : formatted;
+      $(".total-price").html(output);
+    }
+
+    $(document).on("change input", ".quantity-product", function () {
       updateTotalPrice();
     });
 
-    $(".btn-decrease").on("click", function () {
-      var currentQuantity = parseInt(quantityInput.val());
-      if (currentQuantity > 1) {
-        quantityInput.val(currentQuantity - 1);
-        updateTotalPrice();
-      }
+    $(document).on("click", ".btn-increase, .btn-decrease", function () {
+      setTimeout(updateTotalPrice, 10);
     });
-
-    function updateTotalPrice() {
-      var currentPrice = parseFloat($(".price-on-sale").text().replace("$", ""));
-      var quantity = parseInt(quantityInput.val());
-      var totalPrice = currentPrice * quantity;
-      $(".total-price").text("$" + totalPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-    }
-
   };
 
   /* scroll grid product

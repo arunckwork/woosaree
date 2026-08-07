@@ -101,6 +101,8 @@ function woosaree_setup()
 			'flex-height' => true,
 		)
 	);
+	// Enable WooCommerce support
+	add_theme_support('woocommerce');
 }
 add_action('after_setup_theme', 'woosaree_setup');
 
@@ -148,6 +150,8 @@ function woosaree_scripts()
 	wp_enqueue_style('woosaree-font-icons', get_template_directory_uri() . '/fonts/font-icons.css', array(), _S_VERSION);
 	wp_enqueue_style('woosaree-bootstrap-css', get_template_directory_uri() . '/css/bootstrap.min.css', array(), _S_VERSION);
 	wp_enqueue_style('woosaree-swiper-css', get_template_directory_uri() . '/css/swiper-bundle.min.css', array(), _S_VERSION);
+	wp_enqueue_style('woosaree-drift-basic', get_template_directory_uri() . '/css/drift-basic.min.css', array(), _S_VERSION);
+	wp_enqueue_style('woosaree-photoswipe', get_template_directory_uri() . '/css/photoswipe.css', array(), _S_VERSION);
 	wp_enqueue_style('woosaree-animate', get_template_directory_uri() . '/css/animate.css', array(), _S_VERSION);
 	wp_enqueue_style('woosaree-sib-styles', '../../../sibforms.com/forms/end-form/build/sib-styles.css', array(), _S_VERSION);
 	wp_enqueue_style('woosaree-css-styles', get_template_directory_uri() . '/css/styles.css', array(), _S_VERSION);
@@ -164,9 +168,14 @@ function woosaree_scripts()
 	wp_enqueue_script('woosaree-bootstrap-select', get_template_directory_uri() . '/js/bootstrap-select.min.js', array('woosaree-bootstrap-js'), _S_VERSION, true);
 	wp_enqueue_script('woosaree-lazysize', get_template_directory_uri() . '/js/lazysize.min.js', array(), _S_VERSION, true);
 	wp_enqueue_script('woosaree-count-down', get_template_directory_uri() . '/js/count-down.js', array(), _S_VERSION, true);
+	wp_enqueue_script('woosaree-drift', get_template_directory_uri() . '/js/drift.min.js', array(), _S_VERSION, true);
+	wp_enqueue_script('woosaree-photoswipe-lightbox', get_template_directory_uri() . '/js/photoswipe-lightbox.umd.min.js', array(), _S_VERSION, true);
+	wp_enqueue_script('woosaree-photoswipe-umd', get_template_directory_uri() . '/js/photoswipe.umd.min.js', array(), _S_VERSION, true);
+	wp_enqueue_script('woosaree-zoom', get_template_directory_uri() . '/js/zoom.js', array('woosaree-swiper-js', 'woosaree-drift', 'woosaree-photoswipe-umd'), _S_VERSION, true);
 	wp_enqueue_script('woosaree-wow', get_template_directory_uri() . '/js/wow.min.js', array(), _S_VERSION, true);
 	wp_enqueue_script('woosaree-multiple-modal', get_template_directory_uri() . '/js/multiple-modal.js', array(), _S_VERSION, true);
 	wp_enqueue_script('woosaree-main', get_template_directory_uri() . '/js/main.js', array('jquery'), _S_VERSION, true);
+	wp_enqueue_script('woosaree-product-detail-js', get_template_directory_uri() . '/js/product-detail.js', array('jquery'), _S_VERSION, true);
 	wp_enqueue_script('woosaree-sibforms', get_template_directory_uri() . '/js/sibforms.html', array(), _S_VERSION, true);
 
 	$inline_js = "
