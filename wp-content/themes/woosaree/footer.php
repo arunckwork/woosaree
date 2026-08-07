@@ -1650,15 +1650,12 @@ if (isset($locations['header_menu'])) {
             <div class="wrap">
                 <div class="tf-product-info-item">
                     <div class="image">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="">
+                        <img class="quick-add-img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="">
                     </div>
                     <div class="content">
-                        <a href="product-detail.html">Ribbed Tank Top</a>
+                        <a href="#" class="quick-add-title">Product Title</a>
                         <div class="tf-product-info-price">
-                            <!-- <div class="price-on-sale">₹ 8.00</div>
-                                <div class="compare-at-price">₹ 10.00</div>
-                                <div class="badges-on-sale"><span>20</span>% OFF</div> -->
-                            <div class="price">₹ 18.00</div>
+                            <div class="price price-on-sale quick-add-price" data-price="0">₹ 0.00</div>
                         </div>
                     </div>
                 </div>
@@ -1666,31 +1663,19 @@ if (isset($locations['header_menu'])) {
                 <div class="tf-product-info-quantity mb_15">
                     <div class="quantity-title fw-6">Quantity</div>
                     <div class="wg-quantity">
-                        <span class="btn-quantity minus-btn">-</span>
-                        <input type="text" name="number" value="1">
-                        <span class="btn-quantity plus-btn">+</span>
+                        <span class="btn-quantity btn-decrease">-</span>
+                        <input type="text" class="quantity-product" name="quantity_display" value="1" readonly>
+                        <span class="btn-quantity btn-increase">+</span>
                     </div>
                 </div>
                 <div class="tf-product-info-buy-button">
-                    <form>
-                        <a
-                            class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add
-                                to cart -&nbsp;</span><span class="tf-qty-price">₹ 18.00</span></a>
-                        <div class="tf-product-btn-wishlist btn-icon-action">
-                            <i class="icon-heart"></i>
-                            <i class="icon-delete"></i>
-                        </div>
-                        <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
-                                class="tf-product-btn-wishlist box-icon bg_white compare btn-icon-action">
-                                <span class="icon icon-compare"></span>
-                                <span class="icon icon-check"></span>
-                            </a> -->
-                        <div class="w-100">
-                            <a href="#" class="btns-full">Buy with <img
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/payments/paypal.png"
-                                    alt=""></a>
-                            <a href="#" class="payment-more-option">More payment options</a>
-                        </div>
+                    <form class="cart d-flex flex-wrap gap-10" action="" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="add-to-cart" class="quick-add-product-id" value="" />
+                        <input type="hidden" name="quantity" class="quantity-product-hidden" value="1" />
+                        <button type="submit" class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart">
+                            <span>Add to cart -&nbsp;</span>
+                            <span class="tf-qty-price total-price quick-add-total-price">₹ 0.00</span>
+                        </button>
                     </form>
                 </div>
             </div>

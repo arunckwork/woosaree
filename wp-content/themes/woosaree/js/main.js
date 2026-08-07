@@ -495,7 +495,50 @@
         $(".tf-mini-cart-tool-openable").removeClass("open");
       }
     );
-  };
+  /* quick add popup modal handler
+  -------------------------------------------------------------------------*/
+  $(document).on("click", ".quick-add[data-bs-toggle='modal']", function () {
+    var $btn = $(this);
+    var productId = $btn.data("product-id");
+    var title = $btn.data("product-title");
+    var priceHtml = $btn.data("product-price");
+    var rawPrice = parseFloat($btn.data("product-raw-price")) || 0;
+    var image = $btn.data("product-image");
+    var url = $btn.data("product-url");
+
+    var $modal = $("#quick_add");
+    if ($modal.length && productId) {
+      if (image) {
+        $modal.find(".quick-add-img").attr("src", image).attr("alt", title || "");
+      }
+      if (title) {
+        $modal.find(".quick-add-title").text(title).attr("href", url || "#");
+      }
+      if (priceHtml) {
+        $modal.find(".quick-add-price").html(priceHtml).attr("data-price", rawPrice);
+      }
+      $modal.find(".quick-add-product-id").val(productId);
+
+      // Reset quantity
+      $modal.find(".quantity-product").val(1);
+      $modal.find(".quantity-product-hidden").val(1);
+
+      // Update total price
+      var symbol = $modal.find(".woocommerce-Price-currencySymbol").text();
+      if (!symbol && priceHtml) {
+        var match = priceHtml.match(/^[^\d\s]+/);
+        symbol = match ? match[0] : "";
+      }
+      var formattedPrice = rawPrice.toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      var output = symbol ? (symbol + (symbol.length > 1 ? " " : "") + formattedPrice) : formattedPrice;
+      $modal.find(".quick-add-total-price").html(output);
+    }
+  });
+};
+
 
 
 
