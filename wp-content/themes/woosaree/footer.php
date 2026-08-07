@@ -51,25 +51,25 @@
                             <h6>Quick Links</h6>
                         </div>
                         <?php
-$locations = get_nav_menu_locations();
+                        $locations = get_nav_menu_locations();
 
-if (isset($locations['footer_menu'])) {
-    $menu = wp_get_nav_menu_object($locations['footer_menu']);
-    $menu_items = wp_get_nav_menu_items($menu->term_id);
+                        if (isset($locations['footer_menu'])) {
+                            $menu = wp_get_nav_menu_object($locations['footer_menu']);
+                            $menu_items = wp_get_nav_menu_items($menu->term_id);
 
-    echo '<ul class="footer-menu-list tf-collapse-content">';
+                            echo '<ul class="footer-menu-list tf-collapse-content">';
 
-    foreach ($menu_items as $item) {
-        echo '<li>';
-        echo '<a class="footer-menu_item" href="' . esc_url($item->url) . '">';
-        echo esc_html($item->title);
-        echo '</a>';
-        echo '</li>';
-    }
+                            foreach ($menu_items as $item) {
+                                echo '<li>';
+                                echo '<a class="footer-menu_item" href="' . esc_url($item->url) . '">';
+                                echo esc_html($item->title);
+                                echo '</a>';
+                                echo '</li>';
+                            }
 
-    echo '</ul>';
-}
-?>
+                            echo '</ul>';
+                        }
+                        ?>
                         <!-- <ul class="footer-menu-list tf-collapse-content">
                             <li>
                                 <a href="privacy-policy.html" class="footer-menu_item">Privacy Policy</a>
@@ -92,7 +92,7 @@ if (isset($locations['footer_menu'])) {
                             </li>
                         </ul> -->
                     </div>
-                    
+
                     <div class="col-xl-4 col-md-6 col-12">
                         <div class="footer-newsletter footer-col-block">
                             <div class="footer-heading footer-heading-desktop">
@@ -225,588 +225,7 @@ if (isset($locations['footer_menu'])) {
 <!-- /toolbar-bottom -->
 
 <!-- modalDemo -->
-<div class="modal fade modalDemo" id="modalDemo">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="header">
-                <h5 class="demo-title">Ultimate HTML Theme</h5>
-                <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-            </div>
-            <div class="mega-menu">
-                <div class="row-demo">
-                    <div class="demo-item">
-                        <a href="index.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-01.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-01.jpg"
-                                    alt="home-01">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                    <span>Trend</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Fashion 01</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-multi-brand.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-multi-brand.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-multi-brand.jpg"
-                                    alt="home-multi-brand">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                    <span class="demo-hot">Hot</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Multi Brand</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-02.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-02.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-02.jpg"
-                                    alt="home-02">
-                                <div class="demo-label">
-                                    <span class="demo-hot">Hot</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Fashion 02</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-03.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-03.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-03.jpg"
-                                    alt="home-03">
-                            </div>
-                            <span class="demo-name">Home Fashion 03</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-04.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-04.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-04.jpg"
-                                    alt="home-04">
-                            </div>
-                            <span class="demo-name">Home Fashion 04</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-05.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-05.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-05.jpg"
-                                    alt="home-05">
-                            </div>
-                            <span class="demo-name">Home Fashion 05</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-06.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-06.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-06.jpg"
-                                    alt="home-06">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Fashion 06</span>
-                        </a>
-                    </div>
-                    <div class="demo-item position-relative">
-                        <a href="home-personalized-pod.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-personalized-pod.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-personalized-pod.jpg"
-                                    alt="home-personalized-pod">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Personalized Pod</span>
-                        </a>
-                    </div>
-                    <div class="demo-item position-relative">
-                        <a href="home-pickleball.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-pickleball.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-pickleball.png"
-                                    alt="home-pickleball">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Pickleball</span>
-                        </a>
-                    </div>
-                    <div class="demo-item position-relative">
-                        <a href="home-ceramic.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-ceramic.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-ceramic.png"
-                                    alt="home-ceramic">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Ceramic</span>
-                        </a>
-                    </div>
-                    <div class="demo-item position-relative">
-                        <a href="home-food.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-food.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-food.png"
-                                    alt="home-food">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Food</span>
-                        </a>
-                    </div>
-                    <div class="demo-item position-relative">
-                        <a href="home-camp-and-hike.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-camp-and-hike.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-camp-and-hike.png"
-                                    alt="home-camp-and-hike">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Camp And Hike</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-07.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-07.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-07.jpg"
-                                    alt="home-07">
-                            </div>
-                            <span class="demo-name">Home Fashion 07</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-08.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-08.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-08.jpg"
-                                    alt="home-08">
-                            </div>
-                            <span class="demo-name">Home Fashion 08</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-skincare.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-skincare.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-skincare.jpg"
-                                    alt="home-skincare">
-                            </div>
-                            <span class="demo-name">Home Skincare</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-headphone.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-headphone.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-headphone.jpg"
-                                    alt="home-headphone">
-                            </div>
-                            <span class="demo-name">Home Headphone</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-giftcard.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-giftcard.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-giftcard.jpg"
-                                    alt="home-gift-card">
-                            </div>
-                            <span class="demo-name">Home Gift Card</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-furniture.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-furniture.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-furniture.jpg"
-                                    alt="home-furniture">
-                            </div>
-                            <span class="demo-name">Home Furniture</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-furniture-02.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-furniture2.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-furniture2.jpg"
-                                    alt="home-furniture-2">
-                            </div>
-                            <span class="demo-name">Home Furniture 2</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-skateboard.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-skateboard.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-skateboard.jpg"
-                                    alt="home-skateboard">
-                            </div>
-                            <span class="demo-name">Home Skateboard</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-stroller.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-stroller.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-stroller.jpg"
-                                    alt="home-stroller">
-                            </div>
-                            <span class="demo-name">Home Stroller</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-decor.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-decor.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-decor.jpg"
-                                    alt="home-decor">
-                            </div>
-                            <span class="demo-name">Home Decor</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-electronic.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-electronic.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-electronic.jpg"
-                                    alt="home-electronic">
-                            </div>
-                            <span class="demo-name">Home Electronic</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-setup-gear.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-setup-gear.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-setup-gear.jpg"
-                                    alt="home-setup-gear">
-                            </div>
-                            <span class="demo-name">Home Setup Gear</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-dog-accessories.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-dog-accessories.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-dog-accessories.jpg"
-                                    alt="home-dog-accessories">
-                            </div>
-                            <span class="demo-name">Home Dog Accessories</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-kitchen-wear.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-kitchen.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-kitchen.jpg"
-                                    alt="home-kitchen-wear">
-                            </div>
-                            <span class="demo-name">Home Kitchen Wear</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-phonecase.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-phonecase.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-phonecase.jpg"
-                                    alt="home-phonecase">
-                            </div>
-                            <span class="demo-name">Home Phonecase</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-paddle-boards.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home_paddle_board.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home_paddle_board.jpg"
-                                    alt="home-paddle_board">
-                            </div>
-                            <span class="demo-name">Home Paddle Boards</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-glasses.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-glasses.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-glasses.jpg"
-                                    alt="home-glasses">
-                            </div>
-                            <span class="demo-name">Home Glasses</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-pod-store.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-pod-store.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-pod-store.jpg"
-                                    alt="home-pod-store">
-                            </div>
-                            <span class="demo-name">Home POD Store</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-activewear.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-activewear.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-activewear.jpg"
-                                    alt="home-activewear">
-                            </div>
-                            <span class="demo-name">Activewear</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-handbag.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-handbag.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-handbag.jpg"
-                                    alt="home-handbag">
-                            </div>
-                            <span class="demo-name">Home Handbag</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-tee.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-tee.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-tee.jpg"
-                                    alt="home-tee">
-                            </div>
-                            <span class="demo-name">Home Tee</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-sock.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-socks.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-socks.jpg"
-                                    alt="home-sock">
-                            </div>
-                            <span class="demo-name">Home Sock</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-jewerly.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-jewelry.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-jewelry.jpg"
-                                    alt="home-jewelry">
-                            </div>
-                            <span class="demo-name">Home Jewelry</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-sneaker.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-sneaker.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-sneaker.jpg"
-                                    alt="home-sneaker">
-                            </div>
-                            <span class="demo-name">Home Sneaker</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-accessories.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-accessories.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-accessories.jpg"
-                                    alt="home-accessories">
-                            </div>
-                            <span class="demo-name">Home Accessories</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-grocery.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-gocery.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-gocery.jpg"
-                                    alt="home-grocery">
-                            </div>
-                            <span class="demo-name">Home Grocery</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-baby.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-baby.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-baby.jpg"
-                                    alt="home-baby">
-                            </div>
-                            <span class="demo-name">Home Baby</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-cosmetic.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-cosmetic.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-cosmetic.png"
-                                    alt="home-cosmetic">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Cosmetic</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-plant.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-plant.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-plant.png"
-                                    alt="home-plant">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Plant</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-swimwear.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-swimwear.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-swimwear.png"
-                                    alt="home-swimwear">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Swimwear</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-electric-bike.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-electric-bike.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-electric-bike.png"
-                                    alt="home-electric-bike">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Electric Bike</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-footwear.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-footwear.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-footwear.jpg"
-                                    alt="home-footwear">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Footwear</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-book-store.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-bookstore.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-bookstore.png"
-                                    alt="home-bookstore">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Bookstore</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-gaming-accessories.html">
-                            <div class="demo-image position-relative">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-gaming-accessories.png"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-gaming-accessories.png"
-                                    alt="home-gaming-accessories">
-                                <div class="demo-label">
-                                    <span class="demo-new">New</span>
-                                </div>
-                            </div>
-                            <span class="demo-name">Home Gaming Accessories</span>
-                        </a>
-                    </div>
-                    <div class="demo-item">
-                        <a href="home-parallax.html">
-                            <div class="demo-image">
-                                <img class="lazyload"
-                                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-skincare.jpg"
-                                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/demo/home-skincare.jpg"
-                                    alt="home-skincare">
-                            </div>
-                            <span class="demo-name">Home Parallax</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
 
-        </div>
-    </div>
-</div>
 <!-- /modalDemo -->
 
 <!-- mobile menu -->
@@ -814,26 +233,26 @@ if (isset($locations['footer_menu'])) {
     <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
     <div class="mb-canvas-content">
         <div class="mb-body">
-             <?php
-$locations = get_nav_menu_locations();
+            <?php
+            $locations = get_nav_menu_locations();
 
-if (isset($locations['header_menu'])) {
-    $menu = wp_get_nav_menu_object($locations['header_menu']);
-    $menu_items = wp_get_nav_menu_items($menu->term_id);
+            if (isset($locations['header_menu'])) {
+                $menu = wp_get_nav_menu_object($locations['header_menu']);
+                $menu_items = wp_get_nav_menu_items($menu->term_id);
 
-    echo '<ul class="nav-ul-mb" id="wrapper-menu-navigation">';
+                echo '<ul class="nav-ul-mb" id="wrapper-menu-navigation">';
 
-    foreach ($menu_items as $item) {
-        echo '<li class="nav-mb-item">';
-        echo '<a class="mb-menu-link" href="' . esc_url($item->url) . '">';
-        echo esc_html($item->title);
-        echo '</a>';
-        echo '</li>';
-    }
+                foreach ($menu_items as $item) {
+                    echo '<li class="nav-mb-item">';
+                    echo '<a class="mb-menu-link" href="' . esc_url($item->url) . '">';
+                    echo esc_html($item->title);
+                    echo '</a>';
+                    echo '</li>';
+                }
 
-    echo '</ul>';
-}
-?>
+                echo '</ul>';
+            }
+            ?>
             <!-- <ul class="nav-ul-mb" id="wrapper-menu-navigation">
 
                 <li class="nav-mb-item">
@@ -954,297 +373,18 @@ if (isset($locations['header_menu'])) {
 
 
 <!-- canvasSearch -->
-<div class="offcanvas offcanvas-end canvas-search" id="canvasSearch">
-    <div class="canvas-wrapper">
-        <header class="tf-search-head">
-            <div class="title fw-5">
-                Search our site
-                <div class="close">
-                    <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
-                </div>
-            </div>
-            <div class="tf-search-sticky">
-                <form class="tf-mini-search-frm">
-                    <fieldset class="text">
-                        <input type="text" placeholder="Search" class="" name="text" tabindex="0" value=""
-                            aria-required="true" required="">
-                    </fieldset>
-                    <button class="" type="submit"><i class="icon-search"></i></button>
-                </form>
-            </div>
-        </header>
-        <div class="canvas-body p-0">
-            <div class="tf-search-content">
-                <div class="tf-cart-hide-has-results">
-                    <div class="tf-col-quicklink">
-                        <div class="tf-search-content-title fw-5">Quick link</div>
-                        <ul class="tf-quicklink-list">
-                            <li class="tf-quicklink-item">
-                                <a href="shop-default.html" class="">Fashion</a>
-                            </li>
-                            <li class="tf-quicklink-item">
-                                <a href="shop-default.html" class="">Men</a>
-                            </li>
-                            <li class="tf-quicklink-item">
-                                <a href="shop-default.html" class="">Women</a>
-                            </li>
-                            <li class="tf-quicklink-item">
-                                <a href="shop-default.html" class="">Accessories</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="tf-col-content">
-                        <div class="tf-search-content-title fw-5">Need some inspiration?</div>
-                        <div class="tf-search-hidden-inner">
-                            <div class="tf-loop-item">
-                                <div class="image">
-                                    <a href="product-detail.html">
-                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-3.jpg"
-                                            alt="">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <a href="product-detail.html">Cotton jersey top</a>
-                                    <div class="tf-product-info-price">
-                                        <div class="compare-at-price">₹ 10.00</div>
-                                        <div class="price-on-sale fw-6">₹ 8.00</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tf-loop-item">
-                                <div class="image">
-                                    <a href="product-detail.html">
-                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-2.jpg"
-                                            alt="">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <a href="product-detail.html">Mini crossbody bag</a>
-                                    <div class="tf-product-info-price">
-                                        <div class="price fw-6">₹ 18.00</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tf-loop-item">
-                                <div class="image">
-                                    <a href="product-detail.html">
-                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-1.jpg"
-                                            alt="">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <a href="product-detail.html">Oversized Printed T-shirt</a>
-                                    <div class="tf-product-info-price">
-                                        <div class="price fw-6">₹ 18.00</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- /canvasSearch -->
 
 <!-- toolbarShopmb -->
-<div class="offcanvas offcanvas-start canvas-mb toolbar-shop-mobile" id="toolbarShopmb">
-    <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
-    <div class="mb-canvas-content">
-        <div class="mb-body">
-            <ul class="nav-ul-mb" id="wrapper-menu-navigation">
-                <li class="nav-mb-item">
-                    <a href="shop-collection-sub.html" class="tf-category-link mb-menu-link">
-                        <div class="image">
-                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/img/top-img/MPJ-25495-1.webp"
-                                alt="">
-                        </div>
-                        <span>BOYS</span>
-                    </a>
-                </li>
-                <li class="nav-mb-item">
-                    <a href="shop-collection-sub.html" class="tf-category-link mb-menu-link">
-                        <div class="image">
-                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/img/top-img/2025017005068-1 REVISED.webp"
-                                alt="">
-                        </div>
-                        <span>GIRLS</span>
-                    </a>
-                </li>
-                <li class="nav-mb-item">
-                    <a href="shop-collection-sub.html" class="tf-category-link mb-menu-link">
-                        <div class="image">
-                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/img/top-img/MPJ-25491-1.webp"
-                                alt="">
-                        </div>
-                        <span>INFANTS</span>
-                    </a>
-                </li>
-                <li class="nav-mb-item">
-                    <a href="shop-collection-sub.html" class="tf-category-link mb-menu-link">
-                        <div class="image">
-                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/collections/collection-circle-11.jpg"
-                                alt="">
-                        </div>
-                        <span>BABY SETS</span>
-                    </a>
-                </li>
 
-                <!-- <li class="nav-mb-item">
-                        <a href="shop-default.html" class="tf-category-link mb-menu-link">
-                            <div class="image">
-                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/img/top-img/SS26-SGST26246-1.webp" alt="">
-                            </div>
-                            <span>Boys Set (8-14 Y)</span>
-                        </a>
-                    </li> -->
-
-                <li class="nav-mb-item">
-                    <a href="shop-collection-sub.html" class="tf-category-link mb-menu-link">
-                        <div class="image">
-                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/img/top-img/AWLDPL25323-1.webp"
-                                alt="">
-                        </div>
-                        <span>ACCESSORIES</span>
-                    </a>
-                </li>
-
-                <li class="nav-mb-item">
-                    <a href="shop-collection-sub.html" class="tf-category-link mb-menu-link">
-                        <div class="image">
-                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/shop/cate/cate5.jpg" alt="">
-                        </div>
-                        <span>SHOP ALL</span>
-                    </a>
-                </li>
-
-
-
-            </ul>
-        </div>
-        <div class="mb-bottom">
-            <a href="shop-default.html" class="tf-btn fw-5 btn-line">View all collection<i
-                    class="icon icon-arrow1-top-left"></i></a>
-        </div>
-    </div>
-</div>
 <!-- /toolbarShopmb -->
 
 <!-- modal login -->
-<div class="modal modalCentered fade form-sign-in modal-part-content" id="login">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="header">
-                <div class="demo-title">Log in</div>
-                <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-            </div>
-            <div class="tf-login-form">
-                <form class="" action="#" accept-charset="utf-8">
-                    <div class="tf-field style-1">
-                        <input class="tf-field-input tf-input" placeholder=" " type="email" name="">
-                        <label class="tf-field-label" for="">Email *</label>
-                    </div>
-                    <div class="tf-field style-1">
-                        <input class="tf-field-input tf-input" placeholder=" " type="password" name="">
-                        <label class="tf-field-label" for="">Password *</label>
-                    </div>
-                    <div>
-                        <a href="#forgotPassword" data-bs-toggle="modal" class="btn-link link">Forgot your password?</a>
-                    </div>
-                    <div class="bottom">
-                        <div class="w-100">
-                            <button type="submit"
-                                class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Log
-                                    in</span></button>
-                        </div>
-                        <div class="w-100">
-                            <a href="#register" data-bs-toggle="modal" class="btn-link fw-6 w-100 link">
-                                New customer? Create your account
-                                <i class="icon icon-arrow1-top-left"></i>
-                            </a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal modalCentered fade form-sign-in modal-part-content" id="forgotPassword">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="header">
-                <div class="demo-title">Reset your password</div>
-                <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-            </div>
-            <div class="tf-login-form">
-                <form class="">
-                    <div>
-                        <p>Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out,
-                            click unsubscribe in our emails</p>
-                    </div>
-                    <div class="tf-field style-1">
-                        <input class="tf-field-input tf-input" placeholder=" " type="email" name="">
-                        <label class="tf-field-label" for="">Email *</label>
-                    </div>
-                    <div>
-                        <a href="#login" data-bs-toggle="modal" class="btn-link link">Cancel</a>
-                    </div>
-                    <div class="bottom">
-                        <div class="w-100">
-                            <button type="submit"
-                                class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Reset
-                                    password</span></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal modalCentered fade form-sign-in modal-part-content" id="register">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="header">
-                <div class="demo-title">Register</div>
-                <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-            </div>
-            <div class="tf-login-form">
-                <form class="">
-                    <div class="tf-field style-1">
-                        <input class="tf-field-input tf-input" placeholder=" " type="text" name="">
-                        <label class="tf-field-label" for="">First name</label>
-                    </div>
-                    <div class="tf-field style-1">
-                        <input class="tf-field-input tf-input" placeholder=" " type="text" name="">
-                        <label class="tf-field-label" for="">Last name</label>
-                    </div>
-                    <div class="tf-field style-1">
-                        <input class="tf-field-input tf-input" placeholder=" " type="email" name="">
-                        <label class="tf-field-label" for="">Email *</label>
-                    </div>
-                    <div class="tf-field style-1">
-                        <input class="tf-field-input tf-input" placeholder=" " type="password" name="">
-                        <label class="tf-field-label" for="">Password *</label>
-                    </div>
-                    <div class="bottom">
-                        <div class="w-100">
-                            <a href="register.html"
-                                class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Register</span></a>
-                        </div>
-                        <div class="w-100">
-                            <a href="#login" data-bs-toggle="modal" class="btn-link fw-6 w-100 link">
-                                Already have an account? Log in here
-                                <i class="icon icon-arrow1-top-left"></i>
-                            </a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
 <!-- /modal login -->
 
 <!-- shoppingCart -->
@@ -1281,7 +421,7 @@ if (isset($locations['header_menu'])) {
                                 <div class="tf-mini-cart-item">
                                     <div class="tf-mini-cart-image">
                                         <a href="product-detail.html">
-                                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-2.jpg"
+                                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images\sree-img\img\pr\IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG"
                                                 alt="">
                                         </a>
                                     </div>
@@ -1302,7 +442,7 @@ if (isset($locations['header_menu'])) {
                                 <div class="tf-mini-cart-item">
                                     <div class="tf-mini-cart-image">
                                         <a href="product-detail.html">
-                                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-3.jpg"
+                                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images\sree-img\img\pr\IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG"
                                                 alt="">
                                         </a>
                                     </div>
@@ -1331,7 +471,7 @@ if (isset($locations['header_menu'])) {
                                             <div class="tf-minicart-recommendations-item">
                                                 <div class="tf-minicart-recommendations-item-image">
                                                     <a href="product-detail.html">
-                                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-3.jpg"
+                                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images\sree-img\img\pr\IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG"
                                                             alt="">
                                                     </a>
                                                 </div>
@@ -1350,7 +490,7 @@ if (isset($locations['header_menu'])) {
                                             <div class="tf-minicart-recommendations-item">
                                                 <div class="tf-minicart-recommendations-item-image">
                                                     <a href="product-detail.html">
-                                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/white-2.jpg"
+                                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images\sree-img\img\pr\IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG"
                                                             alt="">
                                                     </a>
                                                 </div>
@@ -1604,7 +744,7 @@ if (isset($locations['header_menu'])) {
                                         </div>
                                         <a href="product-detail.html">
                                             <img class="radius-3"
-                                                src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg"
+                                                src="<?php echo get_stylesheet_directory_uri(); ?>/images\sree-img\img\pr\IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG"
                                                 alt="">
                                         </a>
                                     </div>
@@ -1616,7 +756,7 @@ if (isset($locations['header_menu'])) {
                                         </div>
                                         <a href="product-detail.html">
                                             <img class="radius-3"
-                                                src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/pink-1.jpg"
+                                                src="<?php echo get_stylesheet_directory_uri(); ?>/images\sree-img\img\pr\IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG"
                                                 alt="">
                                         </a>
                                     </div>
@@ -1650,7 +790,9 @@ if (isset($locations['header_menu'])) {
             <div class="wrap">
                 <div class="tf-product-info-item">
                     <div class="image">
-                        <img class="quick-add-img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/products/orange-1.jpg" alt="">
+                        <img class="quick-add-img"
+                            src="<?php echo get_stylesheet_directory_uri(); ?>/images\sree-img\img\pr\IDN-68211_VIOLET_21817_TGC16255552-pic1.JPG"
+                            alt="">
                     </div>
                     <div class="content">
                         <a href="#" class="quick-add-title">Product Title</a>
@@ -1672,7 +814,8 @@ if (isset($locations['header_menu'])) {
                     <form class="cart d-flex flex-wrap gap-10" action="" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="add-to-cart" class="quick-add-product-id" value="" />
                         <input type="hidden" name="quantity" class="quantity-product-hidden" value="1" />
-                        <button type="submit" class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart">
+                        <button type="submit"
+                            class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart">
                             <span>Add to cart -&nbsp;</span>
                             <span class="tf-qty-price total-price quick-add-total-price">₹ 0.00</span>
                         </button>
@@ -1798,116 +941,7 @@ if (isset($locations['header_menu'])) {
 
 
 <!-- auto popup  -->
-<div class="modal modalCentered fade auto-popup modal-newleter">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-top">
-                <img class="lazyload"
-                    data-src="<?php echo get_stylesheet_directory_uri(); ?>/images/item/banner-newleter.jpg"
-                    src="<?php echo get_stylesheet_directory_uri(); ?>/images/item/banner-newleter.jpg" alt="home-01">
-                <span class="icon icon-close btn-hide-popup" data-bs-dismiss="modal"></span>
-            </div>
-            <div class="modal-bottom">
-                <h4 class="text-center">Don’t mis out</h4>
-                <h6 class="text-center">Be the first one to get the new product at early bird prices.</h6>
-                <div class="sib-form">
-                    <div id="sib-form-container" class="sib-form-container">
-                        <div id="error-message" class="sib-form-message-panel">
-                            <div class="sib-form-message-panel__text sib-form-message-panel__text--center">
-                                <span class="sib-form-message-panel__inner-text">
-                                    Your subscription could not be saved. Please try again.
-                                </span>
-                            </div>
-                        </div>
-                        <div id="success-message" class="sib-form-message-panel">
-                            <div class="sib-form-message-panel__text sib-form-message-panel__text--center">
-                                <span class="sib-form-message-panel__inner-text">
-                                    Your subscription has been successful.
-                                </span>
-                            </div>
-                        </div>
-                        <div id="sib-container" class="sib-container--large sib-container--vertical">
-                            <form id="sib-form" method="POST" class="form-newsletter" action="#"
-                                data-type="subscription">
-                                <div>
-                                    <div class="sib-form-block">
-                                        <p></p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="sib-form-block">
-                                        <div class="sib-text-form-block">
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="sib-input sib-form-block">
-                                        <div class="form__entry entry_block">
-                                            <div class="form__label-row ">
-                                                <label class="entry__label" for="EMAIL">
-                                                </label>
-                                                <div class="entry__field">
-                                                    <input class="input " type="text" id="EMAIL" name="EMAIL"
-                                                        autocomplete="off" placeholder="Email *" data-required="true"
-                                                        required />
-                                                </div>
-                                            </div>
-                                            <label class="entry__error entry__error--primary"></label>
-                                            <label class="entry__specification">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="sib-optin sib-form-block">
-                                        <div class="form__entry entry_mcq">
-                                            <div class="form__label-row ">
-                                                <div class="entry__choice">
-                                                    <label>
-                                                        <input type="checkbox" class="input_replaced" value="1"
-                                                            id="OPT_IN" name="OPT_IN" />
-                                                        <span class="checkbox checkbox_tick_positive"></span>
-                                                        <span>
-                                                            <p></p>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <label class="entry__error entry__error--primary">
-                                            </label>
-                                            <label class="entry__specification">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="sib-form-block">
-                                        <button
-                                            class="sib-form-block__button sib-form-block__button-with-loader tf-btn btn-fill radius-3 animate-hover-btn w-100 justify-content-center"
-                                            form="sib-form" type="submit">
-                                            <svg class="icon clickable__icon progress-indicator__icon sib-hide-loader-icon"
-                                                viewBox="0 0 512 512">
-                                                <path
-                                                    d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
-                                            </svg>
-                                            Keep me updated
-                                        </button>
-                                    </div>
-                                </div>
-                                <input type="text" name="email_address_check" value="" class="input--hidden">
-                                <input type="hidden" name="locale" value="en">
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <a href="#" data-bs-dismiss="modal" class="tf-btn btn-line fw-6 btn-hide-popup">Not interested</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- /auto popup  -->
 
 <?php wp_footer(); ?>

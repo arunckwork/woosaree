@@ -174,40 +174,47 @@ endif;
 
                     global $product;
 
+                    $main_image_url = get_the_post_thumbnail_url($product->get_id(), 'woocommerce_thumbnail');
+                    if (!$main_image_url) {
+                        $main_image_url = wc_placeholder_img_src('woocommerce_thumbnail');
+                    }
+
+                    $gallery_image_ids = $product->get_gallery_image_ids();
+                    $has_hover_img = !empty($gallery_image_ids) && !empty($gallery_image_ids[0]);
+                    $hover_image_url = $has_hover_img ? wp_get_attachment_image_url($gallery_image_ids[0], 'woocommerce_thumbnail') : '';
             ?>
-                    <!-- card product 1 -->
-                    <div class="card-product fl-item" style="display: block;">
+                    <!-- card product -->
+                    <div class="card-product fl-item<?php echo !$has_hover_img ? ' none-hover' : ''; ?>" style="display: block;">
                         <div class="card-product-wrapper">
                             <a href="<?php the_permalink(); ?>" class="product-img">
-                                <img class="img-product ls-is-cached lazyloaded" data-src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" alt="image-product">
-                                <img class="img-hover ls-is-cached lazyloaded" data-src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" alt="image-product">
+                                <img class="img-product" src="<?php echo esc_url($main_image_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                <?php if ($has_hover_img && $hover_image_url): ?>
+                                    <img class="img-hover" src="<?php echo esc_url($hover_image_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                <?php endif; ?>
                             </a>
                             <div class="list-product-btn">
-                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
+                                <a href="#quick_add" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading" data-product-id="<?php echo esc_attr($product->get_id()); ?>" data-product-title="<?php echo esc_attr(get_the_title()); ?>" data-product-price="<?php echo esc_attr($product->get_price_html()); ?>" data-product-raw-price="<?php echo esc_attr($product->get_price()); ?>" data-product-image="<?php echo esc_url($main_image_url); ?>" data-product-url="<?php echo esc_url(get_permalink()); ?>">
                                     <span class="icon icon-bag"></span>
-                                    <span class="tooltip">Quick Add</span>
+                                    <span class="tooltip">Add to Cart</span>
                                 </a>
-                                <!-- <a href="#" class="box-icon bg_white wishlist btn-icon-action">
-                                    <span class="icon icon-heart"></span>
-                                    <span class="tooltip">Add to Wishlist</span>
-                                    <span class="icon icon-delete"></span>
-                                </a> -->
-                                <!-- <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
-                                    <span class="icon icon-compare"></span>
-                                    <span class="tooltip">Add to Compare</span>
-                                    <span class="icon icon-check"></span>
-                                </a> -->
-                                <a href="#quick_view" data-bs-toggle="modal" class="box-icon bg_white quickview tf-btn-loading">
+                                <?php if (function_exists('yith_wcwl_add_to_wishlist')): ?>
+                                    <?php echo do_shortcode('[yith_wcwl_add_to_wishlist]'); ?>
+                                <?php else: ?>
+                                    <a href="#" class="box-icon bg_white wishlist btn-icon-action">
+                                        <span class="icon icon-heart"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                <?php endif; ?>
+                                <a href="<?php the_permalink(); ?>" class="box-icon bg_white quickview tf-btn-loading">
                                     <span class="icon icon-view"></span>
-                                    <span class="tooltip">Quick View</span>
+                                    <span class="tooltip">View Details</span>
                                 </a>
                             </div>
                         
                         </div>
                         <div class="card-product-info">
-                            <a href="<?php the_permalink(); ?>" class="title link"><?php the_title(); ?> </a>
+                            <a href="<?php the_permalink(); ?>" class="title link"><?php the_title(); ?></a>
                             <span class="price"><?php echo $product->get_price_html(); ?></span>
-                           
                         </div>
                     </div>
                  

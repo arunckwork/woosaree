@@ -524,7 +524,7 @@
       $modal.find(".quantity-product-hidden").val(1);
 
       // Update total price
-      var symbol = $modal.find(".woocommerce-Price-currencySymbol").text();
+      var symbol = $modal.find(".woocommerce-Price-currencySymbol").first().text().trim();
       if (!symbol && priceHtml) {
         var match = priceHtml.match(/^[^\d\s]+/);
         symbol = match ? match[0] : "";
@@ -533,7 +533,7 @@
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
-      var output = symbol ? (symbol + (symbol.length > 1 ? " " : "") + formattedPrice) : formattedPrice;
+      var output = symbol ? (symbol + " " + formattedPrice) : formattedPrice;
       $modal.find(".quick-add-total-price").html(output);
     }
   });
@@ -611,7 +611,7 @@
 
     function getCurrencySymbol() {
       var $priceEl = $(".price-on-sale");
-      var symbol = $priceEl.find(".woocommerce-Price-currencySymbol").text();
+      var symbol = $priceEl.find(".woocommerce-Price-currencySymbol").first().text().trim();
       if (!symbol) {
         var text = $priceEl.text().trim();
         var match = text.match(/^[^\d\s]+/);
@@ -631,7 +631,7 @@
         maximumFractionDigits: 2
       });
 
-      var output = symbol ? (symbol + (symbol.length > 1 ? " " : "") + formatted) : formatted;
+      var output = symbol ? (symbol + " " + formatted) : formatted;
       $(".total-price").html(output);
     }
 
