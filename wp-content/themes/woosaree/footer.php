@@ -216,7 +216,7 @@
         <a href="#shoppingCart" data-bs-toggle="modal">
             <div class="toolbar-icon">
                 <i class="icon-bag"></i>
-                <div class="toolbar-count">1</div>
+                <div class="toolbar-count count-box"><?php echo (function_exists('WC') && WC()->cart) ? esc_html(WC()->cart->get_cart_contents_count()) : 0; ?></div>
             </div>
             <div class="toolbar-label">Cart</div>
         </a>
@@ -689,7 +689,7 @@
                         <input type="hidden" name="add-to-cart" class="quick-add-product-id" value="" />
                         <input type="hidden" name="quantity" class="quantity-product-hidden" value="1" />
                         <button type="submit"
-                            class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart">
+                            class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart tf-btn-loading">
                             <span>Add to cart -&nbsp;</span>
                             <span class="tf-qty-price total-price quick-add-total-price">₹ 0.00</span>
                         </button>

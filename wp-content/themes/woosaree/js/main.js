@@ -541,7 +541,7 @@
     if (!productId) return;
 
     if ($btn && $btn.length) {
-      $btn.addClass("loading").prop("disabled", true);
+      $btn.addClass("tf-btn-loading loading").prop("disabled", true);
     }
 
     var ajaxUrl = (typeof woosaree_ajax !== "undefined" && woosaree_ajax.ajax_url)

@@ -234,7 +234,7 @@ if (isset($locations['header_menu'])) {
                             <!-- <li class="nav-wishlist"><a href="wishlist.html" class="nav-icon-item"><i class="icon icon-heart"></i><span class="count-box">0</span></a></li> -->
 
                             <li class="nav-cart"><a href="#shoppingCart" data-bs-toggle="modal" class="nav-icon-item"><i
-                                        class="icon icon-bag"></i><span class="count-box">0</span></a></li>
+                                        class="icon icon-bag"></i><span class="count-box"><?php echo (function_exists('WC') && WC()->cart) ? esc_html(WC()->cart->get_cart_contents_count()) : 0; ?></span></a></li>
                         </ul>
                     </div>
                 </div>

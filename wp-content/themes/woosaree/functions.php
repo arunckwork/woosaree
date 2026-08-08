@@ -430,6 +430,7 @@ add_filter('woocommerce_add_to_cart_fragments', 'woosaree_cart_fragments');
 function woosaree_cart_fragments($fragments) {
 	$count = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_contents_count() : 0;
 	$fragments['span.count-box'] = '<span class="count-box">' . esc_html($count) . '</span>';
+	$fragments['div.count-box'] = '<div class="toolbar-count count-box">' . esc_html($count) . '</div>';
 	$fragments['div.tf-mini-cart-items'] = woosaree_render_mini_cart_items();
 	$subtotal = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_subtotal() : '';
 	$fragments['div.tf-totals-total-value'] = '<div class="tf-totals-total-value fw-6">' . $subtotal . '</div>';
