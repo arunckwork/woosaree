@@ -424,6 +424,21 @@ function woosaree_render_mini_cart_items() {
 }
 
 /**
+ * Render Live Cart Page Wrap for AJAX Fragment
+ */
+function woosaree_render_cart_wrap_fragment() {
+	ob_start();
+	if ( function_exists( 'WC' ) && WC()->cart ) {
+		if ( WC()->cart->is_empty() ) {
+			wc_get_template( 'cart/cart-empty.php' );
+		} else {
+			wc_get_template( 'cart/cart.php' );
+		}
+	}
+	return ob_get_clean();
+}
+
+/**
  * Dynamic WooCommerce Cart Fragments
  */
 add_filter('woocommerce_add_to_cart_fragments', 'woosaree_cart_fragments');
@@ -434,6 +449,9 @@ function woosaree_cart_fragments($fragments) {
 	$fragments['div.tf-mini-cart-items'] = woosaree_render_mini_cart_items();
 	$subtotal = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_subtotal() : '';
 	$fragments['div.tf-totals-total-value'] = '<div class="tf-totals-total-value fw-6">' . $subtotal . '</div>';
+	$cart_wrap_html = woosaree_render_cart_wrap_fragment();
+	$fragments['section.flat-spacing-11'] = $cart_wrap_html;
+	$fragments['div.tf-page-cart-wrap'] = $cart_wrap_html;
 	return $fragments;
 }
 

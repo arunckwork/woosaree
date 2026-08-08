@@ -676,6 +676,75 @@
     }
   });
 
+  /* Cart Page AJAX Quantity Plus / Minus Handlers
+  -------------------------------------------------------------------------*/
+  $(document).on("click", ".cart-page-qty-btn", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var $btn = $(this);
+    var cartItemKey = $btn.data("cart-item-key");
+    var currentQty = parseInt($btn.data("current-qty")) || 1;
+    var newQty = $btn.hasClass("btnincrease") ? (currentQty + 1) : (currentQty - 1);
+
+    if (!cartItemKey) return;
+
+    $btn.closest("tr.tf-cart-item").css("opacity", "0.5");
+
+    var ajaxUrl = (typeof woosaree_ajax !== "undefined" && woosaree_ajax.ajax_url)
+      ? woosaree_ajax.ajax_url
+      : "/wp-admin/admin-ajax.php";
+
+    $.ajax({
+      type: "POST",
+      url: ajaxUrl,
+      data: {
+        action: "woosaree_update_cart_quantity",
+        cart_item_key: cartItemKey,
+        quantity: newQty
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success && response.data && response.data.fragments) {
+          $(document.body).trigger("added_to_cart", [response.data.fragments, "", $btn]);
+        }
+      }
+    });
+  });
+
+  /* Cart Page AJAX Remove Item Handler
+  -------------------------------------------------------------------------*/
+  $(document).on("click", ".cart-page-remove-btn", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var $btn = $(this);
+    var cartItemKey = $btn.data("cart-item-key");
+
+    if (!cartItemKey) return;
+
+    $btn.closest("tr.tf-cart-item").css("opacity", "0.5");
+
+    var ajaxUrl = (typeof woosaree_ajax !== "undefined" && woosaree_ajax.ajax_url)
+      ? woosaree_ajax.ajax_url
+      : "/wp-admin/admin-ajax.php";
+
+    $.ajax({
+      type: "POST",
+      url: ajaxUrl,
+      data: {
+        action: "woosaree_remove_cart_item",
+        cart_item_key: cartItemKey
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success && response.data && response.data.fragments) {
+          $(document.body).trigger("added_to_cart", [response.data.fragments, "", $btn]);
+        }
+      }
+    });
+  });
+
 
 
 
@@ -731,14 +800,10 @@
    /* total cart
   -------------------------------------------------------------------------*/
   var totalPriceVariant = function () {
-    var quantityInput = $(".quantity-product");
-
     function getUnitPrice() {
-      var $priceEl = $(".price-on-sale");
+      var $modal = $("#quick_add");
+      var $priceEl = $modal.find(".quick-add-price, .price-on-sale").first();
       var unitPrice = parseFloat($priceEl.attr("data-price"));
-      if (isNaN(unitPrice)) {
-        unitPrice = parseFloat($(".total-price").attr("data-price"));
-      }
       if (isNaN(unitPrice)) {
         var cleanText = $priceEl.text().replace(/[^0-9.]/g, "");
         unitPrice = parseFloat(cleanText) || 0;
@@ -747,7 +812,8 @@
     }
 
     function getCurrencySymbol() {
-      var $priceEl = $(".price-on-sale");
+      var $modal = $("#quick_add");
+      var $priceEl = $modal.find(".quick-add-price, .price-on-sale").first();
       var symbol = $priceEl.find(".woocommerce-Price-currencySymbol").first().text().trim();
       if (!symbol) {
         var text = $priceEl.text().trim();
@@ -759,8 +825,12 @@
 
     function updateTotalPrice() {
       var unitPrice = getUnitPrice();
-      var quantity = parseInt($(".quantity-product").val()) || 1;
+      if (isNaN(unitPrice) || unitPrice <= 0) return;
+
+      var quantity = parseInt($("#quick_add .quantity-product").val()) || 1;
       var totalPrice = unitPrice * quantity;
+      if (isNaN(totalPrice)) return;
+
       var symbol = getCurrencySymbol();
 
       var formatted = totalPrice.toLocaleString("en-IN", {
@@ -769,14 +839,14 @@
       });
 
       var output = symbol ? (symbol + " " + formatted) : formatted;
-      $(".total-price").html(output);
+      $("#quick_add .quick-add-total-price").html(output);
     }
 
-    $(document).on("change input", ".quantity-product", function () {
+    $(document).on("change input", "#quick_add .quantity-product", function () {
       updateTotalPrice();
     });
 
-    $(document).on("click", ".btn-increase, .btn-decrease", function () {
+    $(document).on("click", "#quick_add .btn-increase, #quick_add .btn-decrease", function () {
       setTimeout(updateTotalPrice, 10);
     });
   };
