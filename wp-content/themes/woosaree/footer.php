@@ -216,7 +216,9 @@
         <a href="#shoppingCart" data-bs-toggle="modal">
             <div class="toolbar-icon">
                 <i class="icon-bag"></i>
-                <div class="toolbar-count count-box"><?php echo (function_exists('WC') && WC()->cart) ? esc_html(WC()->cart->get_cart_contents_count()) : 0; ?></div>
+                <div class="toolbar-count count-box">
+                    <?php echo (function_exists('WC') && WC()->cart) ? esc_html(WC()->cart->get_cart_contents_count()) : 0; ?>
+                </div>
             </div>
             <div class="toolbar-label">Cart</div>
         </a>
@@ -396,7 +398,7 @@
                 <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
             </div>
             <div class="wrap">
-                <div class="tf-mini-cart-threshold">
+                <!-- <div class="tf-mini-cart-threshold">
                     <div class="tf-progress-bar">
                         <span style="width: 50%;">
                             <div class="progress-car">
@@ -413,11 +415,11 @@
                         Buy <span class="price fw-6">₹ 75.00</span> more to enjoy <span class="fw-6">Free
                             Shipping</span>
                     </div>
-                </div>
+                </div> -->
                 <div class="tf-mini-cart-wrap">
                     <div class="tf-mini-cart-main">
                         <div class="tf-mini-cart-sroll">
-                            <?php 
+                            <?php
                             if (function_exists('woosaree_render_mini_cart_items')) {
                                 echo woosaree_render_mini_cart_items();
                             } else {
@@ -430,7 +432,9 @@
                         <div class="tf-mini-cart-bottom-wrap">
                             <div class="tf-cart-totals-discounts">
                                 <div class="tf-cart-total">Subtotal</div>
-                                <div class="tf-totals-total-value fw-6"><?php echo (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_subtotal() : ''; ?></div>
+                                <div class="tf-totals-total-value fw-6">
+                                    <?php echo (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_subtotal() : ''; ?>
+                                </div>
                             </div>
                             <div class="tf-cart-tax">Taxes and shipping calculated at checkout</div>
                             <div class="tf-mini-cart-line"></div>
@@ -438,7 +442,8 @@
                                 <a href="<?php echo function_exists('wc_get_cart_url') ? esc_url(wc_get_cart_url()) : '#'; ?>"
                                     class="tf-btn btn-outline radius-3 link w-100 justify-content-center">View cart</a>
                                 <a href="<?php echo function_exists('wc_get_checkout_url') ? esc_url(wc_get_checkout_url()) : '#'; ?>"
-                                    class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Check out</span></a>
+                                    class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Check
+                                        out</span></a>
                             </div>
                         </div>
                     </div>
