@@ -1160,9 +1160,13 @@
   };
 
 var totalVariant = function () {
-  $(".tf-variant-item,.tf-cart-item").each(function () {
+  if ($("body").hasClass("woocommerce-cart") || $(".tf-table-page-cart").length) {
+    return;
+  }
+
+  $(".tf-variant-item").each(function () {
     var productItem = $(this);
-    var basePrice = parseFloat(productItem.find(".tf-variant-item-price .price").data("base-price")) || parseFloat(productItem.find(".tf-variant-item-price .price").text().replace("$", ""));
+    var basePrice = parseFloat(productItem.find(".tf-variant-item-price .price").data("base-price")) || parseFloat(productItem.find(".tf-variant-item-price .price").text().replace(/[^0-9.]/g, ""));
     var quantityInput = productItem.find("input");
 
     productItem.find(".color-btn, .size-btn").on("click", function () {
@@ -1175,13 +1179,13 @@ var totalVariant = function () {
     });
 
     productItem.find(".btnincrease").on("click", function () {
-      var currentQuantity = parseInt(quantityInput.val());
+      var currentQuantity = parseInt(quantityInput.val()) || 1;
       quantityInput.val(currentQuantity + 1);
       updateTotalPrice(null, productItem);
     });
 
     productItem.find(".btndecrease").on("click", function () {
-      var currentQuantity = parseInt(quantityInput.val());
+      var currentQuantity = parseInt(quantityInput.val()) || 1;
       if (currentQuantity > 1) {
         quantityInput.val(currentQuantity - 1);
         updateTotalPrice(null, productItem);
@@ -1189,9 +1193,14 @@ var totalVariant = function () {
     });
 
     function updateTotalPrice(price, scope) {
-      var currentPrice = price || parseFloat(scope.find(".tf-variant-item-price .price").text().replace("$", ""));
-      var quantity = parseInt(scope.find("input").val());
+      var rawText = scope.find(".tf-variant-item-price .price").text().replace(/[^0-9.]/g, "");
+      var currentPrice = price || parseFloat(rawText);
+      if (isNaN(currentPrice) || currentPrice <= 0) return;
+
+      var quantity = parseInt(scope.find("input").val()) || 1;
       var totalPrice = currentPrice * quantity;
+      if (isNaN(totalPrice)) return;
+
       scope.find(".tf-variant-item-total .price").text(
         "$" + totalPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
       );
