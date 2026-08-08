@@ -10,6 +10,17 @@ defined('ABSPATH') || exit;
 get_header('shop');
 ?>
 
+<?php
+$page_title = function_exists('woocommerce_page_title') ? woocommerce_page_title(false) : '';
+if (empty(trim(strip_tags($page_title)))) {
+    $shop_id = function_exists('wc_get_page_id') ? wc_get_page_id('shop') : 0;
+    $page_title = ($shop_id > 0) ? get_the_title($shop_id) : '';
+}
+if (empty(trim(strip_tags($page_title)))) {
+    $page_title = __('Shop', 'woosaree');
+}
+?>
+
 <!-- Breadcrumb -->
 <div class="tf-breadcrumb">
     <div class="container">
@@ -17,7 +28,7 @@ get_header('shop');
             <div class="tf-breadcrumb-list">
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="text">Home</a>
                 <i class="icon icon-arrow-right"></i>
-                <span class="text"><?php woocommerce_page_title(); ?></span>
+                <span class="text"><?php echo esc_html($page_title); ?></span>
             </div>
         </div>
     </div>
@@ -27,7 +38,7 @@ get_header('shop');
 <!-- Page Title -->
 <div class="tf-page-title pt_0">
     <div class="container-full">
-        <h1 class="heading text-center"><?php woocommerce_page_title(); ?></h1>
+        <h1 class="heading text-center"><?php echo esc_html($page_title); ?></h1>
         <?php if (is_product_category() || is_product_tag()): ?>
             <div class="text-center text-2 text_black-2 mt_5">
                 <?php do_action('woocommerce_archive_description'); ?>

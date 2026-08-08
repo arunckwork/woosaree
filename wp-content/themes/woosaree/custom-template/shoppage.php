@@ -6,6 +6,13 @@ Template Name: Custom Shop Page
 get_header();
 ?>
 
+<?php
+$page_title = get_the_title();
+if (empty(trim(strip_tags($page_title)))) {
+    $page_title = __('Shop', 'woosaree');
+}
+?>
+
 <!-- Breadcrumb -->
 <div class="tf-breadcrumb">
     <div class="container">
@@ -13,7 +20,7 @@ get_header();
             <div class="tf-breadcrumb-list">
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="text">Home</a>
                 <i class="icon icon-arrow-right"></i>
-                <span class="text"><?php the_title(); ?></span>
+                <span class="text"><?php echo esc_html($page_title); ?></span>
             </div>
         </div>
     </div>
@@ -23,7 +30,7 @@ get_header();
 <!-- Page Title -->
 <div class="tf-page-title pt_0">
     <div class="container-full">
-        <div class="heading text-center"><?php the_title(); ?></div>
+        <div class="heading text-center"><?php echo esc_html($page_title); ?></div>
         <?php if (has_excerpt()): ?>
             <p class="text-center text-2 text_black-2 mt_5"><?php echo esc_html(get_the_excerpt()); ?></p>
         <?php else: ?>

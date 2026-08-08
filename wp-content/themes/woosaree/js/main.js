@@ -477,10 +477,6 @@
     $(".btn-show-quickview").click(function () {
       $("#quick_view").modal("show");
     });
-    $(".btn-add-to-cart").click(function () {
-      $("#shoppingCart").modal("show");
-    });
-
     $(".btn-add-note").click(function () {
       $(".add-note").addClass("open");
     });
@@ -538,6 +534,147 @@
     }
   });
 };
+
+  /* AJAX Add to Cart Functionality
+  -------------------------------------------------------------------------*/
+  function performAjaxAddToCart(productId, quantity, $btn, $modalToClose) {
+    if (!productId) return;
+
+    if ($btn && $btn.length) {
+      $btn.addClass("loading").prop("disabled", true);
+    }
+
+    var ajaxUrl = (typeof woosaree_ajax !== "undefined" && woosaree_ajax.ajax_url)
+      ? woosaree_ajax.ajax_url
+      : "/wp-admin/admin-ajax.php";
+
+    $.ajax({
+      type: "POST",
+      url: ajaxUrl,
+      data: {
+        action: "woosaree_ajax_add_to_cart",
+        product_id: productId,
+        quantity: quantity || 1
+      },
+      dataType: "json",
+      success: function (response) {
+        if ($btn && $btn.length) {
+          $btn.removeClass("loading").prop("disabled", false);
+        }
+
+        if (response.success && response.data && response.data.fragments) {
+          if ($modalToClose && $modalToClose.length) {
+            $modalToClose.modal("hide");
+          }
+
+          $(document.body).trigger("added_to_cart", [response.data.fragments, response.data.cart_hash, $btn]);
+
+          setTimeout(function () {
+            $("#shoppingCart").modal("show");
+          }, 250);
+        } else if (response.data && response.data.product_url) {
+          window.location.href = response.data.product_url;
+        }
+      },
+      error: function (xhr, status, error) {
+        if ($btn && $btn.length) {
+          $btn.removeClass("loading").prop("disabled", false);
+        }
+        console.error("AJAX add to cart failed:", error);
+      }
+    });
+  }
+
+  $(document).on("submit", "form.cart", function (e) {
+    e.preventDefault();
+
+    var $form = $(this);
+    var $submitBtn = $form.find("button[type='submit'], .btn-add-to-cart").first();
+    var productId = $form.find(".quick-add-product-id").val() || $form.find("input[name='add-to-cart']").val();
+    var quantity = $form.find(".quantity-product-hidden").val() || $form.find("input[name='quantity']").val() || 1;
+    var $modal = $form.closest(".modal");
+
+    performAjaxAddToCart(productId, quantity, $submitBtn, $modal);
+  });
+
+  /* Mini Cart Quantity Plus / Minus AJAX Handler
+  -------------------------------------------------------------------------*/
+  $(document).on("click", ".mini-cart-qty-btn", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var $btn = $(this);
+    var cartItemKey = $btn.data("cart-item-key");
+    var currentQty = parseInt($btn.data("current-qty")) || 1;
+    var newQty = $btn.hasClass("mini-cart-plus") ? (currentQty + 1) : (currentQty - 1);
+
+    if (!cartItemKey) return;
+
+    $btn.closest(".tf-mini-cart-item").css("opacity", "0.5");
+
+    var ajaxUrl = (typeof woosaree_ajax !== "undefined" && woosaree_ajax.ajax_url)
+      ? woosaree_ajax.ajax_url
+      : "/wp-admin/admin-ajax.php";
+
+    $.ajax({
+      type: "POST",
+      url: ajaxUrl,
+      data: {
+        action: "woosaree_update_cart_quantity",
+        cart_item_key: cartItemKey,
+        quantity: newQty
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success && response.data && response.data.fragments) {
+          $(document.body).trigger("added_to_cart", [response.data.fragments, "", $btn]);
+        }
+      }
+    });
+  });
+
+  /* Mini Cart Remove Item AJAX Handler
+  -------------------------------------------------------------------------*/
+  $(document).on("click", ".tf-mini-cart-remove", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var $btn = $(this);
+    var cartItemKey = $btn.data("cart-item-key");
+
+    if (!cartItemKey) return;
+
+    $btn.closest(".tf-mini-cart-item").css("opacity", "0.5");
+
+    var ajaxUrl = (typeof woosaree_ajax !== "undefined" && woosaree_ajax.ajax_url)
+      ? woosaree_ajax.ajax_url
+      : "/wp-admin/admin-ajax.php";
+
+    $.ajax({
+      type: "POST",
+      url: ajaxUrl,
+      data: {
+        action: "woosaree_remove_cart_item",
+        cart_item_key: cartItemKey
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success && response.data && response.data.fragments) {
+          $(document.body).trigger("added_to_cart", [response.data.fragments, "", $btn]);
+        }
+      }
+    });
+  });
+
+  /* Global Fragment Replacer Fallback
+  -------------------------------------------------------------------------*/
+  $(document.body).on("added_to_cart", function (e, fragments) {
+    if (fragments) {
+      $.each(fragments, function (key, value) {
+        $(key).replaceWith(value);
+      });
+    }
+  });
 
 
 
