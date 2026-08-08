@@ -321,14 +321,14 @@ function load_more_products()
 							<span class="icon icon-bag"></span>
 							<span class="tooltip">Add to Cart</span>
 						</a>
-						<?php if (function_exists('yith_wcwl_add_to_wishlist')): ?>
-							<?php echo do_shortcode('[yith_wcwl_add_to_wishlist]'); ?>
-						<?php else: ?>
-							<a href="#" class="box-icon bg_white wishlist btn-icon-action">
-								<span class="icon icon-heart"></span>
-								<span class="tooltip">Add to Wishlist</span>
-							</a>
-						<?php endif; ?>
+						<!-- <?php if (function_exists('yith_wcwl_add_to_wishlist')): ?>
+			<?php echo do_shortcode('[yith_wcwl_add_to_wishlist]'); ?>
+			<?php else: ?>
+			<a href="#" class="box-icon bg_white wishlist btn-icon-action">
+				<span class="icon icon-heart"></span>
+				<span class="tooltip">Add to Wishlist</span>
+			</a>
+			<?php endif; ?> -->
 						<a href="<?php the_permalink(); ?>" class="box-icon bg_white quickview tf-btn-loading">
 							<span class="icon icon-view"></span>
 							<span class="tooltip">View Details</span>
@@ -379,7 +379,8 @@ add_action('wp_enqueue_scripts', 'custom_scripts');
 /**
  * Render Woosaree Live Mini Cart Items List
  */
-function woosaree_render_mini_cart_items() {
+function woosaree_render_mini_cart_items()
+{
 	ob_start();
 	?>
 	<div class="tf-mini-cart-items">
@@ -392,7 +393,7 @@ function woosaree_render_mini_cart_items() {
 					$product_name = apply_filters('woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key);
 					$product_price = apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key);
 					$qty = $cart_item['quantity'];
-			?>
+					?>
 					<div class="tf-mini-cart-item" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>">
 						<div class="tf-mini-cart-image">
 							<a href="<?php echo esc_url($product_permalink); ?>">
@@ -400,19 +401,25 @@ function woosaree_render_mini_cart_items() {
 							</a>
 						</div>
 						<div class="tf-mini-cart-info">
-							<a class="title link" href="<?php echo esc_url($product_permalink); ?>"><?php echo esc_html($product_name); ?></a>
+							<a class="title link"
+								href="<?php echo esc_url($product_permalink); ?>"><?php echo esc_html($product_name); ?></a>
 							<div class="price fw-6"><?php echo $product_price; ?></div>
 							<div class="tf-mini-cart-btns">
 								<div class="wg-quantity small">
-									<span class="btn-quantity mini-cart-qty-btn mini-cart-minus" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>" data-current-qty="<?php echo esc_attr($qty); ?>" style="cursor:pointer;">-</span>
+									<span class="btn-quantity mini-cart-qty-btn mini-cart-minus"
+										data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
+										data-current-qty="<?php echo esc_attr($qty); ?>" style="cursor:pointer;">-</span>
 									<input type="text" name="cart_quantity" value="<?php echo esc_attr($qty); ?>" readonly>
-									<span class="btn-quantity mini-cart-qty-btn mini-cart-plus" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>" data-current-qty="<?php echo esc_attr($qty); ?>" style="cursor:pointer;">+</span>
+									<span class="btn-quantity mini-cart-qty-btn mini-cart-plus"
+										data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
+										data-current-qty="<?php echo esc_attr($qty); ?>" style="cursor:pointer;">+</span>
 								</div>
-								<div class="tf-mini-cart-remove" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>" style="cursor:pointer;">Remove</div>
+								<div class="tf-mini-cart-remove" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
+									style="cursor:pointer;">Remove</div>
 							</div>
 						</div>
 					</div>
-			<?php
+							<?php
 				endif;
 			endforeach; ?>
 		<?php else: ?>
@@ -426,13 +433,14 @@ function woosaree_render_mini_cart_items() {
 /**
  * Render Live Cart Page Wrap for AJAX Fragment
  */
-function woosaree_render_cart_wrap_fragment() {
+function woosaree_render_cart_wrap_fragment()
+{
 	ob_start();
-	if ( function_exists( 'WC' ) && WC()->cart ) {
-		if ( WC()->cart->is_empty() ) {
-			wc_get_template( 'cart/cart-empty.php' );
+	if (function_exists('WC') && WC()->cart) {
+		if (WC()->cart->is_empty()) {
+			wc_get_template('cart/cart-empty.php');
 		} else {
-			wc_get_template( 'cart/cart.php' );
+			wc_get_template('cart/cart.php');
 		}
 	}
 	return ob_get_clean();
@@ -442,7 +450,8 @@ function woosaree_render_cart_wrap_fragment() {
  * Dynamic WooCommerce Cart Fragments
  */
 add_filter('woocommerce_add_to_cart_fragments', 'woosaree_cart_fragments');
-function woosaree_cart_fragments($fragments) {
+function woosaree_cart_fragments($fragments)
+{
 	$count = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_contents_count() : 0;
 	$fragments['span.count-box'] = '<span class="count-box">' . esc_html($count) . '</span>';
 	$fragments['div.count-box'] = '<div class="toolbar-count count-box">' . esc_html($count) . '</div>';
@@ -458,7 +467,7 @@ function woosaree_cart_fragments($fragments) {
 /**
  * Output global woosaree_ajax script in head
  */
-add_action('wp_head', function() {
+add_action('wp_head', function () {
 	?>
 	<script type="text/javascript">
 		var woosaree_ajax = {
@@ -473,7 +482,8 @@ add_action('wp_head', function() {
  */
 add_action('wp_ajax_woosaree_ajax_add_to_cart', 'woosaree_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_woosaree_ajax_add_to_cart', 'woosaree_ajax_add_to_cart');
-function woosaree_ajax_add_to_cart() {
+function woosaree_ajax_add_to_cart()
+{
 	$product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
 	$quantity = isset($_POST['quantity']) ? absint($_POST['quantity']) : 1;
 
@@ -508,7 +518,8 @@ function woosaree_ajax_add_to_cart() {
  */
 add_action('wp_ajax_woosaree_update_cart_quantity', 'woosaree_update_cart_quantity');
 add_action('wp_ajax_nopriv_woosaree_update_cart_quantity', 'woosaree_update_cart_quantity');
-function woosaree_update_cart_quantity() {
+function woosaree_update_cart_quantity()
+{
 	$cart_item_key = isset($_POST['cart_item_key']) ? sanitize_text_field($_POST['cart_item_key']) : '';
 	$new_qty = isset($_POST['quantity']) ? absint($_POST['quantity']) : 0;
 
@@ -529,7 +540,8 @@ function woosaree_update_cart_quantity() {
  */
 add_action('wp_ajax_woosaree_remove_cart_item', 'woosaree_remove_cart_item');
 add_action('wp_ajax_nopriv_woosaree_remove_cart_item', 'woosaree_remove_cart_item');
-function woosaree_remove_cart_item() {
+function woosaree_remove_cart_item()
+{
 	$cart_item_key = isset($_POST['cart_item_key']) ? sanitize_text_field($_POST['cart_item_key']) : '';
 	if ($cart_item_key && function_exists('WC') && WC()->cart) {
 		WC()->cart->remove_cart_item($cart_item_key);
