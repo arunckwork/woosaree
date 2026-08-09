@@ -537,8 +537,14 @@
 
   /* AJAX Add to Cart Functionality
   -------------------------------------------------------------------------*/
+  var isAddingToCart = false; // guard flag — prevents duplicate in-flight requests
+
   function performAjaxAddToCart(productId, quantity, $btn, $modalToClose) {
     if (!productId) return;
+
+    // Block any second call while a request is already in progress
+    if (isAddingToCart) return;
+    isAddingToCart = true;
 
     if ($btn && $btn.length) {
       $btn.addClass("tf-btn-loading loading").prop("disabled", true);
@@ -558,6 +564,8 @@
       },
       dataType: "json",
       success: function (response) {
+        isAddingToCart = false; // release guard
+
         if ($btn && $btn.length) {
           $btn.removeClass("loading").prop("disabled", false);
         }
@@ -577,6 +585,8 @@
         }
       },
       error: function (xhr, status, error) {
+        isAddingToCart = false; // release guard so the user can retry
+
         if ($btn && $btn.length) {
           $btn.removeClass("loading").prop("disabled", false);
         }
