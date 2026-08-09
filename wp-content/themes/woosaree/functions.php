@@ -263,6 +263,79 @@ function create_home_slider_cpt()
 
 add_action('init', 'create_home_slider_cpt');
 
+/**
+ * Custom Meta Box for Home Slider Redirect URL
+ */
+function home_slider_add_redirect_meta_box() {
+	add_meta_box(
+		'home_slider_redirect_box',
+		__( 'Slider Link Settings', 'woosaree' ),
+		'home_slider_render_redirect_meta_box',
+		'home_slider',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'home_slider_add_redirect_meta_box' );
+
+function home_slider_render_redirect_meta_box( $post ) {
+	wp_nonce_field( 'home_slider_redirect_nonce_action', 'home_slider_redirect_nonce' );
+	$redirect_url = get_post_meta( $post->ID, '_home_slider_redirect_url', true );
+	?>
+	<p>
+		<label for="home_slider_redirect_url"><strong><?php _e( 'Redirect URL:', 'woosaree' ); ?></strong></label>
+	</p>
+	<p>
+		<input type="url" id="home_slider_redirect_url" name="home_slider_redirect_url" value="<?php echo esc_url( $redirect_url ); ?>" class="widefat" placeholder="https://example.com/collection" />
+	</p>
+	<p class="description">
+		<?php _e( 'Enter the URL where users should be redirected when clicking this slide. If left empty, it will default to the home page URL.', 'woosaree' ); ?>
+	</p>
+	<?php
+}
+
+function home_slider_save_redirect_meta( $post_id ) {
+	if ( ! isset( $_POST['home_slider_redirect_nonce'] ) ) {
+		return;
+	}
+	if ( ! wp_verify_nonce( $_POST['home_slider_redirect_nonce'], 'home_slider_redirect_nonce_action' ) ) {
+		return;
+	}
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['home_slider_redirect_url'] ) ) {
+		$redirect_url = esc_url_raw( trim( $_POST['home_slider_redirect_url'] ) );
+		update_post_meta( $post_id, '_home_slider_redirect_url', $redirect_url );
+	}
+}
+add_action( 'save_post_home_slider', 'home_slider_save_redirect_meta' );
+
+/**
+ * Custom columns in WP Admin for Home Slider CPT
+ */
+function home_slider_custom_columns( $columns ) {
+	$columns['slider_redirect_url'] = __( 'Redirect URL', 'woosaree' );
+	return $columns;
+}
+add_filter( 'manage_home_slider_posts_columns', 'home_slider_custom_columns' );
+
+function home_slider_custom_column_content( $column, $post_id ) {
+	if ( 'slider_redirect_url' === $column ) {
+		$url = get_post_meta( $post_id, '_home_slider_redirect_url', true );
+		if ( ! empty( $url ) ) {
+			echo '<a href="' . esc_url( $url ) . '" target="_blank">' . esc_html( $url ) . '</a>';
+		} else {
+			echo '<span style="color:#888;">' . esc_html( home_url( '/' ) ) . ' <em>(Default Home)</em></span>';
+		}
+	}
+}
+add_action( 'manage_home_slider_posts_custom_column', 'home_slider_custom_column_content', 10, 2 );
+
 // Load More Products AJAX Handler
 add_action('wp_ajax_load_more_products', 'load_more_products');
 add_action('wp_ajax_nopriv_load_more_products', 'load_more_products');

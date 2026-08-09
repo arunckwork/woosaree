@@ -23,10 +23,11 @@ get_header();
 
                 while ($slider->have_posts()):
                     $slider->the_post();
-
+                    $redirect_url = get_post_meta( get_the_ID(), '_home_slider_redirect_url', true );
+                    $slider_link  = ! empty( $redirect_url ) ? $redirect_url : home_url( '/' );
                     ?>
                     <div class="swiper-slide">
-                        <a href="shop-default.html" class="wrap-slider">
+                        <a href="<?php echo esc_url( $slider_link ); ?>" class="wrap-slider">
                             <img class="lazyload" data-src="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>"
                                 alt="<?php the_title(); ?>" src="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>"
                                 alt="<?php the_title(); ?>" alt="hp-slideshow-01">
