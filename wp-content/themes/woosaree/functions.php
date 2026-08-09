@@ -354,6 +354,11 @@ function load_more_products()
 
 	$products = new WP_Query($args);
 
+	// Capture the max number of pages before looping
+	$max_pages = (int) $products->max_num_pages;
+
+	ob_start();
+
 	if ($products->have_posts()):
 
 		while ($products->have_posts()):
@@ -423,7 +428,14 @@ function load_more_products()
 
 	wp_reset_postdata();
 
-	wp_die();
+	$html = ob_get_clean();
+
+	// Return JSON so the JS can read page info and hide the button when done
+	wp_send_json_success(array(
+		'html'         => $html,
+		'current_page' => $page,
+		'max_pages'    => $max_pages,
+	));
 }
 
 function custom_scripts()
