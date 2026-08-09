@@ -239,7 +239,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
                                                 <button type="submit" name="add-to-cart"
                                                     value="<?php echo esc_attr($product->get_id()); ?>"
-                                                    class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart">
+                                                    class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart tf-btn-loading">
                                                     <span>Add to cart -&nbsp;</span>
                                                     <span class="tf-qty-price total-price"
                                                         data-price="<?php echo esc_attr($product->get_price()); ?>"><?php echo wc_price($product->get_price()); ?></span>
@@ -258,8 +258,8 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
                                                 <div class="w-100 mt-2">
                                                     <button type="submit" name="add-to-cart"
                                                         value="<?php echo esc_attr($product->get_id()); ?>"
-                                                        onclick="this.form.action='<?php echo esc_url(wc_get_checkout_url()); ?>';"
-                                                        class="btns-full w-100 text-center py-2"
+                                                        data-buy-now="true"
+                                                        class="btns-full w-100 text-center py-2 tf-btn-loading"
                                                         style="border:none; border-radius:4px; font-weight:600; display:block;">Buy
                                                         Now</button>
                                                 </div>

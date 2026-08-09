@@ -539,7 +539,7 @@
   -------------------------------------------------------------------------*/
   var isAddingToCart = false; // guard flag — prevents duplicate in-flight requests
 
-  function performAjaxAddToCart(productId, quantity, $btn, $modalToClose) {
+  function performAjaxAddToCart(productId, quantity, $btn, $modalToClose, redirectToCheckout) {
     if (!productId) return;
 
     // Block any second call while a request is already in progress
@@ -577,9 +577,18 @@
 
           $(document.body).trigger("added_to_cart", [response.data.fragments, response.data.cart_hash, $btn]);
 
-          setTimeout(function () {
-            $("#shoppingCart").modal("show");
-          }, 250);
+          if (redirectToCheckout) {
+            // Buy Now — go straight to checkout
+            var checkoutUrl = (typeof woosaree_ajax !== "undefined" && woosaree_ajax.checkout_url)
+              ? woosaree_ajax.checkout_url
+              : "/checkout";
+            window.location.href = checkoutUrl;
+          } else {
+            // Normal Add to Cart — open mini-cart
+            setTimeout(function () {
+              $("#shoppingCart").modal("show");
+            }, 250);
+          }
         } else if (response.data && response.data.product_url) {
           window.location.href = response.data.product_url;
         }
@@ -599,12 +608,29 @@
     e.preventDefault();
 
     var $form = $(this);
-    var $submitBtn = $form.find("button[type='submit'], .btn-add-to-cart").first();
-    var productId = $form.find(".quick-add-product-id").val() || $form.find("input[name='add-to-cart']").val();
+
+    // Detect which submit button triggered this — works for both Add to Cart and Buy Now
+    var $submitBtn = $form.find("button[type='submit'][clicked], .btn-add-to-cart").first();
+    if (!$submitBtn.length) {
+      $submitBtn = $form.find("button[type='submit'], .btn-add-to-cart").first();
+    }
+
+    var productId = $form.find(".quick-add-product-id").val() || $form.find("input[name='add-to-cart']").val() || $submitBtn.val();
     var quantity = $form.find(".quantity-product-hidden").val() || $form.find("input[name='quantity']").val() || 1;
     var $modal = $form.closest(".modal");
+    var isBuyNow = $submitBtn.data("buy-now") === true || $submitBtn.data("buy-now") === "true";
 
-    performAjaxAddToCart(productId, quantity, $submitBtn, $modal);
+    // Clear the clicked marker
+    $form.find("button[clicked]").removeAttr("clicked");
+
+    performAjaxAddToCart(productId, quantity, $submitBtn, $modal, isBuyNow);
+  });
+
+  // Track which submit button was actually clicked (needed to distinguish Buy Now from Add to Cart)
+  $(document).on("click", "form.cart button[type='submit']", function () {
+    // Remove marker from siblings first, then mark this one
+    $(this).closest("form").find("button[type='submit']").removeAttr("clicked");
+    $(this).attr("clicked", "true");
   });
 
   /* Mini Cart Quantity Plus / Minus AJAX Handler

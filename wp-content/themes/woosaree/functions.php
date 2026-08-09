@@ -556,7 +556,8 @@ add_action('wp_head', function () {
 	?>
 	<script type="text/javascript">
 		var woosaree_ajax = {
-			ajax_url: "<?php echo esc_url(admin_url('admin-ajax.php')); ?>"
+			ajax_url: "<?php echo esc_url(admin_url('admin-ajax.php')); ?>",
+			checkout_url: "<?php echo esc_url(wc_get_checkout_url()); ?>"
 		};
 	</script>
 	<?php
