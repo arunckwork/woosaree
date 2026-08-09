@@ -604,13 +604,294 @@ function woosaree_contact_form_submit()
 		'Content-Type: text/plain; charset=UTF-8'
 	);
 
-	wp_mail($email, $subject_customer, $body_customer, $headers_customer);
+wp_mail($email, $subject_customer, $body_customer, $headers_customer);
 
 	wp_send_json_success(array('message' => 'Thank you! Your message has been sent successfully. We will get back to you shortly.'));
 }
 
+/**
+ * Render Header Navigation Menu with Submenus and Product Categories
+ */
+function woosaree_render_header_menu()
+{
+	$locations = get_nav_menu_locations();
+	$has_menu = false;
 
+	if (isset($locations['header_menu'])) {
+		$menu = wp_get_nav_menu_object($locations['header_menu']);
+		if ($menu) {
+			$menu_items = wp_get_nav_menu_items($menu->term_id);
+			if (!empty($menu_items)) {
+				$has_menu = true;
 
+				// Organize menu items into parent and children
+				$menu_tree = array();
+				$children = array();
 
+				foreach ($menu_items as $item) {
+					if (empty($item->menu_item_parent)) {
+						$menu_tree[$item->ID] = $item;
+					} else {
+						$children[$item->menu_item_parent][] = $item;
+					}
+				}
 
+				// Fetch WooCommerce product categories for shop menus if needed (excluding uncategorized)
+				$product_cats = array();
+				if (taxonomy_exists('product_cat')) {
+					$terms = get_terms(array(
+						'taxonomy'   => 'product_cat',
+						'hide_empty' => false,
+						'parent'     => 0,
+					));
+					if (!empty($terms) && !is_wp_error($terms)) {
+						$product_cats = array_filter($terms, function ($cat) {
+							return strtolower($cat->slug) !== 'uncategorized' && strtolower($cat->name) !== 'uncategorized';
+						});
+					}
+				}
+
+				echo '<ul class="box-nav-ul d-flex align-items-center justify-content-center gap-30">';
+
+				foreach ($menu_tree as $item_id => $item) {
+					$has_children = isset($children[$item_id]) && !empty($children[$item_id]);
+					$is_shop = (strtolower(trim($item->title)) === 'shop');
+
+					// If shop menu item and has no explicit children, inject product categories as submenus
+					$use_product_cats = ($is_shop && !$has_children && !empty($product_cats));
+					$show_submenu = $has_children || $use_product_cats;
+
+					$li_class = 'menu-item' . ($show_submenu ? ' position-relative' : '');
+					echo '<li class="' . esc_attr($li_class) . '">';
+
+					echo '<a class="item-link" href="' . esc_url($item->url) . '">';
+					echo esc_html($item->title);
+					if ($show_submenu) {
+						echo '<i class="icon icon-arrow-down"></i>';
+					}
+					echo '</a>';
+
+					if ($show_submenu) {
+						echo '<div class="sub-menu submenu-default">';
+						echo '<ul class="menu-list">';
+
+						if ($has_children) {
+							foreach ($children[$item_id] as $child) {
+								$has_sub_children = isset($children[$child->ID]) && !empty($children[$child->ID]);
+								$child_li_class = $has_sub_children ? 'menu-item-2' : '';
+								echo '<li class="' . esc_attr($child_li_class) . '">';
+								echo '<a href="' . esc_url($child->url) . '" class="menu-link-text link text_black-2 position-relative">' . esc_html($child->title) . '</a>';
+
+								if ($has_sub_children) {
+									echo '<div class="sub-menu submenu-default">';
+									echo '<ul class="menu-list">';
+									foreach ($children[$child->ID] as $sub_child) {
+										echo '<li><a href="' . esc_url($sub_child->url) . '" class="menu-link-text link text_black-2">' . esc_html($sub_child->title) . '</a></li>';
+									}
+									echo '</ul>';
+									echo '</div>';
+								}
+								echo '</li>';
+							}
+						} elseif ($use_product_cats) {
+							foreach ($product_cats as $cat) {
+								$cat_url = get_term_link($cat);
+								echo '<li>';
+								echo '<a href="' . esc_url($cat_url) . '" class="menu-link-text link text_black-2 position-relative">' . esc_html($cat->name) . '</a>';
+								echo '</li>';
+							}
+						}
+
+						echo '</ul>';
+						echo '</div>';
+					}
+
+					echo '</li>';
+				}
+
+				echo '</ul>';
+			}
+		}
+	}
+
+	// Fallback menu if no header_menu is assigned
+	if (!$has_menu) {
+		$shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop');
+		$product_cats = array();
+		if (taxonomy_exists('product_cat')) {
+			$terms = get_terms(array(
+				'taxonomy'   => 'product_cat',
+				'hide_empty' => false,
+				'parent'     => 0,
+			));
+			if (!empty($terms) && !is_wp_error($terms)) {
+				$product_cats = array_filter($terms, function ($cat) {
+					return strtolower($cat->slug) !== 'uncategorized' && strtolower($cat->name) !== 'uncategorized';
+				});
+			}
+		}
+
+		echo '<ul class="box-nav-ul d-flex align-items-center justify-content-center gap-30">';
+		echo '<li class="menu-item"><a href="' . esc_url(home_url('/')) . '" class="item-link">Home</a></li>';
+
+		echo '<li class="menu-item position-relative">';
+		echo '<a href="' . esc_url($shop_url) . '" class="item-link">Shop<i class="icon icon-arrow-down"></i></a>';
+		if (!empty($product_cats)) {
+			echo '<div class="sub-menu submenu-default">';
+			echo '<ul class="menu-list">';
+			foreach ($product_cats as $cat) {
+				echo '<li><a href="' . esc_url(get_term_link($cat)) . '" class="menu-link-text link text_black-2 position-relative">' . esc_html($cat->name) . '</a></li>';
+			}
+			echo '</ul>';
+			echo '</div>';
+		}
+		echo '</li>';
+
+		echo '</ul>';
+	}
+}
+
+/**
+ * Render Mobile Navigation Menu with Submenus and Product Categories (excluding Uncategorized)
+ */
+function woosaree_render_mobile_menu()
+{
+	$locations = get_nav_menu_locations();
+	$has_menu = false;
+
+	if (isset($locations['header_menu'])) {
+		$menu = wp_get_nav_menu_object($locations['header_menu']);
+		if ($menu) {
+			$menu_items = wp_get_nav_menu_items($menu->term_id);
+			if (!empty($menu_items)) {
+				$has_menu = true;
+
+				$menu_tree = array();
+				$children = array();
+
+				foreach ($menu_items as $item) {
+					if (empty($item->menu_item_parent)) {
+						$menu_tree[$item->ID] = $item;
+					} else {
+						$children[$item->menu_item_parent][] = $item;
+					}
+				}
+
+				$product_cats = array();
+				if (taxonomy_exists('product_cat')) {
+					$terms = get_terms(array(
+						'taxonomy'   => 'product_cat',
+						'hide_empty' => false,
+						'parent'     => 0,
+					));
+					if (!empty($terms) && !is_wp_error($terms)) {
+						$product_cats = array_filter($terms, function ($cat) {
+							return strtolower($cat->slug) !== 'uncategorized' && strtolower($cat->name) !== 'uncategorized';
+						});
+					}
+				}
+
+				echo '<ul class="nav-ul-mb" id="wrapper-menu-navigation">';
+
+				foreach ($menu_tree as $item_id => $item) {
+					$has_children = isset($children[$item_id]) && !empty($children[$item_id]);
+					$is_shop = (strtolower(trim($item->title)) === 'shop');
+
+					$use_product_cats = ($is_shop && !$has_children && !empty($product_cats));
+					$show_submenu = $has_children || $use_product_cats;
+
+					echo '<li class="nav-mb-item">';
+
+					if ($show_submenu) {
+						$collapse_id = 'mb-dropdown-' . $item_id;
+						echo '<a href="#' . esc_attr($collapse_id) . '" class="collapsed mb-menu-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="' . esc_attr($collapse_id) . '">';
+						echo '<span>' . esc_html($item->title) . '</span>';
+						echo '<span class="btn-open-sub"></span>';
+						echo '</a>';
+
+						echo '<div id="' . esc_attr($collapse_id) . '" class="collapse">';
+						echo '<ul class="sub-nav-menu">';
+
+						if ($has_children) {
+							foreach ($children[$item_id] as $child) {
+								$has_sub_children = isset($children[$child->ID]) && !empty($children[$child->ID]);
+								if ($has_sub_children) {
+									$sub_collapse_id = 'mb-sub-' . $child->ID;
+									echo '<li>';
+									echo '<a href="#' . esc_attr($sub_collapse_id) . '" class="sub-nav-link collapsed" data-bs-toggle="collapse" aria-expanded="false" aria-controls="' . esc_attr($sub_collapse_id) . '">';
+									echo '<span>' . esc_html($child->title) . '</span>';
+									echo '<span class="btn-open-sub"></span>';
+									echo '</a>';
+									echo '<div id="' . esc_attr($sub_collapse_id) . '" class="collapse">';
+									echo '<ul class="sub-nav-menu sub-menu-level-2">';
+									foreach ($children[$child->ID] as $sub_child) {
+										echo '<li><a href="' . esc_url($sub_child->url) . '" class="sub-nav-link">' . esc_html($sub_child->title) . '</a></li>';
+									}
+									echo '</ul>';
+									echo '</div>';
+									echo '</li>';
+								} else {
+									echo '<li><a href="' . esc_url($child->url) . '" class="sub-nav-link">' . esc_html($child->title) . '</a></li>';
+								}
+							}
+						} elseif ($use_product_cats) {
+							foreach ($product_cats as $cat) {
+								echo '<li><a href="' . esc_url(get_term_link($cat)) . '" class="sub-nav-link">' . esc_html($cat->name) . '</a></li>';
+							}
+						}
+
+						echo '</ul>';
+						echo '</div>';
+					} else {
+						echo '<a href="' . esc_url($item->url) . '" class="mb-menu-link">' . esc_html($item->title) . '</a>';
+					}
+
+					echo '</li>';
+				}
+
+				echo '</ul>';
+			}
+		}
+	}
+
+	if (!$has_menu) {
+		$shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop');
+		$product_cats = array();
+		if (taxonomy_exists('product_cat')) {
+			$terms = get_terms(array(
+				'taxonomy'   => 'product_cat',
+				'hide_empty' => false,
+				'parent'     => 0,
+			));
+			if (!empty($terms) && !is_wp_error($terms)) {
+				$product_cats = array_filter($terms, function ($cat) {
+					return strtolower($cat->slug) !== 'uncategorized' && strtolower($cat->name) !== 'uncategorized';
+				});
+			}
+		}
+
+		echo '<ul class="nav-ul-mb" id="wrapper-menu-navigation">';
+		echo '<li class="nav-mb-item"><a href="' . esc_url(home_url('/')) . '" class="mb-menu-link">Home</a></li>';
+
+		echo '<li class="nav-mb-item">';
+		if (!empty($product_cats)) {
+			echo '<a href="#mb-dropdown-shop" class="collapsed mb-menu-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="mb-dropdown-shop">';
+			echo '<span>Shop</span>';
+			echo '<span class="btn-open-sub"></span>';
+			echo '</a>';
+			echo '<div id="mb-dropdown-shop" class="collapse">';
+			echo '<ul class="sub-nav-menu">';
+			foreach ($product_cats as $cat) {
+				echo '<li><a href="' . esc_url(get_term_link($cat)) . '" class="sub-nav-link">' . esc_html($cat->name) . '</a></li>';
+			}
+			echo '</ul>';
+			echo '</div>';
+		} else {
+			echo '<a href="' . esc_url($shop_url) . '" class="mb-menu-link">Shop</a>';
+		}
+		echo '</li>';
+
+		echo '</ul>';
+	}
+}
 

@@ -83,26 +83,7 @@
                     <div class="col-xl-6 tf-md-hidden">
                        
                         <nav class="box-navigation text-center">
-                             <?php
-$locations = get_nav_menu_locations();
-
-if (isset($locations['header_menu'])) {
-    $menu = wp_get_nav_menu_object($locations['header_menu']);
-    $menu_items = wp_get_nav_menu_items($menu->term_id);
-
-    echo '<ul class="box-nav-ul d-flex align-items-center justify-content-center gap-30">';
-
-    foreach ($menu_items as $item) {
-        echo '<li class="menu-item">';
-        echo '<a class="item-link" href="' . esc_url($item->url) . '">';
-        echo esc_html($item->title);
-        echo '</a>';
-        echo '</li>';
-    }
-
-    echo '</ul>';
-}
-?>
+                            <?php woosaree_render_header_menu(); ?>
                             <!-- <ul class="box-nav-ul d-flex align-items-center justify-content-center gap-30">
 
 

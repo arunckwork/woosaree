@@ -235,26 +235,7 @@
     <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
     <div class="mb-canvas-content">
         <div class="mb-body">
-            <?php
-            $locations = get_nav_menu_locations();
-
-            if (isset($locations['header_menu'])) {
-                $menu = wp_get_nav_menu_object($locations['header_menu']);
-                $menu_items = wp_get_nav_menu_items($menu->term_id);
-
-                echo '<ul class="nav-ul-mb" id="wrapper-menu-navigation">';
-
-                foreach ($menu_items as $item) {
-                    echo '<li class="nav-mb-item">';
-                    echo '<a class="mb-menu-link" href="' . esc_url($item->url) . '">';
-                    echo esc_html($item->title);
-                    echo '</a>';
-                    echo '</li>';
-                }
-
-                echo '</ul>';
-            }
-            ?>
+            <?php woosaree_render_mobile_menu(); ?>
             <!-- <ul class="nav-ul-mb" id="wrapper-menu-navigation">
 
                 <li class="nav-mb-item">
