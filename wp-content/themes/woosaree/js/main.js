@@ -609,10 +609,13 @@
 
     var $form = $(this);
 
-    // Detect which submit button triggered this — works for both Add to Cart and Buy Now
-    var $submitBtn = $form.find("button[type='submit'][clicked], .btn-add-to-cart").first();
+    // Detect which submit button triggered this — works for both Add to Cart and Buy Now.
+    // IMPORTANT: must be two separate .find() calls. A union selector ("A, B") returns all
+    // matches in DOM order, so .btn-add-to-cart (first in DOM) always wins .first() even
+    // when Buy Now was the actual button clicked.
+    var $submitBtn = $form.find("button[type='submit'][clicked]"); // prefer the [clicked]-marked button
     if (!$submitBtn.length) {
-      $submitBtn = $form.find("button[type='submit'], .btn-add-to-cart").first();
+      $submitBtn = $form.find("button[type='submit'], .btn-add-to-cart").first(); // fallback
     }
 
     var productId = $form.find(".quick-add-product-id").val() || $form.find("input[name='add-to-cart']").val() || $submitBtn.val();
