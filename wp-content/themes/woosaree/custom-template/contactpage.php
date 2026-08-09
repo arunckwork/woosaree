@@ -57,8 +57,8 @@ get_header();
                         <p class="mb_24">If you’ve got great products your making or looking to work with us then drop
                             us a line.</p>
                         <div>
-                            <form class="form-contact" id="contactform" action="https://themesflat.co/html/ecomus/contact/contact-process.php"
-                                method="post">
+                            <form class="form-contact" id="contactform" action="" method="post">
+                                <?php wp_nonce_field('woosaree_contact_nonce', 'contact_nonce_field'); ?>
                                 <div class="d-flex gap-15 mb_15">
                                     <fieldset class="w-100">
                                         <input type="text" name="name" id="name" required placeholder="Name *" />
@@ -71,10 +71,11 @@ get_header();
                                     <textarea placeholder="Message" name="message" id="message" required cols="30"
                                         rows="10"></textarea>
                                 </div>
-                                <div class="send-wrap">
+                                <div class="send-wrap mb_15">
                                     <button type="submit"
-                                        class="tf-btn w-100 radius-3 btn-fill animate-hover-btn justify-content-center">Send</button>
+                                        class="tf-btn w-100 radius-3 btn-fill animate-hover-btn justify-content-center tf-btn-loading">Send</button>
                                 </div>
+                                <div id="contact-form-response"></div>
                             </form>
                         </div>
                     </div>

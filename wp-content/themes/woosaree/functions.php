@@ -551,6 +551,65 @@ function woosaree_remove_cart_item()
 	wp_send_json_error(array('message' => 'Invalid cart item key'));
 }
 
+/**
+ * AJAX Contact Form Submission Handler
+ */
+add_action('wp_ajax_woosaree_contact_form_submit', 'woosaree_contact_form_submit');
+add_action('wp_ajax_nopriv_woosaree_contact_form_submit', 'woosaree_contact_form_submit');
+function woosaree_contact_form_submit()
+{
+	// Security Nonce Verification
+	if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'woosaree_contact_nonce')) {
+		wp_send_json_error(array('message' => 'Security check failed. Please refresh the page and try again.'));
+	}
+
+	$name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+	$email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+	$message = isset($_POST['message']) ? sanitize_textarea_field($_POST['message']) : '';
+
+	if (empty($name) || empty($email) || empty($message)) {
+		wp_send_json_error(array('message' => 'Please fill in all required fields.'));
+	}
+
+	if (!is_email($email)) {
+		wp_send_json_error(array('message' => 'Please enter a valid email address.'));
+	}
+
+	// Site Admin Notification Email
+	$admin_email = get_option('admin_email');
+	$site_name = get_bloginfo('name');
+
+	$subject_admin = sprintf('[%s] New Contact Enquiry from %s', $site_name, $name);
+	$body_admin  = "You have received a new contact enquiry:\n\n";
+	$body_admin .= "Name: " . $name . "\n";
+	$body_admin .= "Email: " . $email . "\n";
+	$body_admin .= "Message:\n" . $message . "\n\n";
+	$body_admin .= "--\nSent from " . home_url();
+
+	$headers_admin = array(
+		'Content-Type: text/plain; charset=UTF-8',
+		'Reply-To: ' . $name . ' <' . $email . '>'
+	);
+
+	wp_mail($admin_email, $subject_admin, $body_admin, $headers_admin);
+
+	// Customer Auto-Reply Email
+	$subject_customer = sprintf('Thank you for contacting %s', $site_name);
+	$body_customer  = "Hi " . $name . ",\n\n";
+	$body_customer .= "Thank you for reaching out! We have received your inquiry and will get back to you shortly.\n\n";
+	$body_customer .= "Your Message:\n\"" . $message . "\"\n\n";
+	$body_customer .= "Warm regards,\n" . $site_name . " Team\n" . home_url();
+
+	$headers_customer = array(
+		'Content-Type: text/plain; charset=UTF-8'
+	);
+
+	wp_mail($email, $subject_customer, $body_customer, $headers_customer);
+
+	wp_send_json_success(array('message' => 'Thank you! Your message has been sent successfully. We will get back to you shortly.'));
+}
+
+
 
 
 

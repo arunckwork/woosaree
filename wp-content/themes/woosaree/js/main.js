@@ -745,6 +745,68 @@
     });
   });
 
+  /* Dynamic Contact Form AJAX Handler
+  -------------------------------------------------------------------------*/
+  $(document).on("submit", "#contactform", function (e) {
+    e.preventDefault();
+
+    var $form = $(this);
+    var $submitBtn = $form.find("button[type='submit']").first();
+    var $response = $("#contact-form-response");
+
+    var name = $form.find("#name").val();
+    var email = $form.find("#email").val();
+    var message = $form.find("#message").val();
+    var nonce = $form.find("#contact_nonce_field").val();
+
+    if ($submitBtn.length) {
+      $submitBtn.addClass("loading").prop("disabled", true);
+    }
+
+    $response.hide().removeClass("alert-success alert-danger alert").html("");
+
+    var ajaxUrl = (typeof woosaree_ajax !== "undefined" && woosaree_ajax.ajax_url)
+      ? woosaree_ajax.ajax_url
+      : "/wp-admin/admin-ajax.php";
+
+    $.ajax({
+      type: "POST",
+      url: ajaxUrl,
+      data: {
+        action: "woosaree_contact_form_submit",
+        name: name,
+        email: email,
+        message: message,
+        nonce: nonce
+      },
+      dataType: "json",
+      success: function (response) {
+        if ($submitBtn.length) {
+          $submitBtn.removeClass("loading").prop("disabled", false);
+        }
+
+        if (response.success && response.data) {
+          $response
+            .addClass("alert alert-success mt-3")
+            .html(response.data.message || "Thank you! Your message has been sent successfully.")
+            .fadeIn();
+          $form[0].reset();
+        } else {
+          var errorMsg = (response.data && response.data.message)
+            ? response.data.message
+            : "An error occurred. Please try again.";
+          $response.addClass("alert alert-danger mt-3").html(errorMsg).fadeIn();
+        }
+      },
+      error: function (xhr, status, error) {
+        if ($submitBtn.length) {
+          $submitBtn.removeClass("loading").prop("disabled", false);
+        }
+        $response.addClass("alert alert-danger mt-3").html("Server connection error. Please try again.").fadeIn();
+      }
+    });
+  });
+
 
 
 
