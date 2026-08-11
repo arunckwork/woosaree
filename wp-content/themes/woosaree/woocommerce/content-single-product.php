@@ -215,13 +215,18 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
                                 <!-- Add to Cart Form -->
                                 <?php if ($product->is_in_stock()): ?>
+                                    <?php
+                                    $stock_max = ($product->managing_stock() && $product->get_stock_quantity() > 0)
+                                        ? (int) $product->get_stock_quantity()
+                                        : 0;
+                                    ?>
                                     <div class="tf-product-info-quantity mt-4">
                                         <div class="quantity-title fw-6 mb-2">Quantity</div>
-                                        <div class="wg-quantity">
+                                        <div class="wg-quantity" <?php if ($stock_max > 0): ?>data-stock-max="<?php echo $stock_max; ?>"<?php endif; ?>>
                                             <span class="btn-quantity btn-decrease">-</span>
                                             <input type="text" class="quantity-product" name="quantity_display" value="1"
                                                 readonly>
-                                            <span class="btn-quantity btn-increase">+</span>
+                                            <span class="btn-quantity btn-increase <?php echo ($stock_max === 1) ? 'disabled' : ''; ?>" <?php echo ($stock_max === 1) ? 'style="pointer-events: none;"' : ''; ?>>+</span>
                                         </div>
                                     </div>
 

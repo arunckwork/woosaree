@@ -210,6 +210,7 @@ get_header();
                                     data-product-price="<?php echo esc_attr($product->get_price_html()); ?>"
                                     data-product-raw-price="<?php echo esc_attr($product->get_price()); ?>"
                                     data-product-image="<?php echo esc_url($main_image_url); ?>"
+                                    data-product-stock="<?php echo ($product->managing_stock() && $product->get_stock_quantity() > 0) ? (int) $product->get_stock_quantity() : 0; ?>"
                                     data-product-url="<?php echo esc_url(get_permalink()); ?>">
                                     <span class="icon icon-bag"></span>
                                     <span class="tooltip">Add to Cart</span>

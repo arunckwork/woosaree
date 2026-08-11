@@ -6,18 +6,32 @@
         $(document).on('click', '.btn-decrease, .btn-increase', function (e) {
             e.preventDefault();
             var $button = $(this);
-            var $input = $button.closest('.wg-quantity').find('.quantity-product, input[name="quantity"]');
+            var $wg = $button.closest('.wg-quantity');
+            var $input = $wg.find('.quantity-product, input[name="quantity"]');
             var oldValue = parseFloat($input.val()) || 1;
             var newVal = oldValue;
+            var stockMax = parseInt($wg.attr('data-stock-max')) || 0;
 
             if ($button.hasClass('btn-increase')) {
-                newVal = oldValue + 1;
+                if (stockMax > 0 && oldValue >= stockMax) {
+                    newVal = stockMax;
+                } else {
+                    newVal = oldValue + 1;
+                }
             } else {
                 if (oldValue > 1) {
                     newVal = oldValue - 1;
                 } else {
                     newVal = 1;
                 }
+            }
+
+            // Toggle disabled state on increase button if stock limit reached
+            var $increaseBtn = $wg.find('.btn-increase');
+            if (stockMax > 0 && newVal >= stockMax) {
+                $increaseBtn.addClass('disabled').css('pointer-events', 'none');
+            } else {
+                $increaseBtn.removeClass('disabled').css('pointer-events', '');
             }
 
             $input.val(newVal).trigger('change');

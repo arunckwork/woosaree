@@ -515,6 +515,22 @@
       }
       $modal.find(".quick-add-product-id").val(productId);
 
+      // Stock limit handling
+      var stockMax = parseInt($btn.data("product-stock")) || 0;
+      var $wg = $modal.find(".wg-quantity");
+      if (stockMax > 0) {
+        $wg.attr("data-stock-max", stockMax);
+      } else {
+        $wg.removeAttr("data-stock-max");
+      }
+
+      var $increaseBtn = $modal.find(".btn-increase");
+      if (stockMax > 0 && 1 >= stockMax) {
+        $increaseBtn.addClass("disabled").css("pointer-events", "none");
+      } else {
+        $increaseBtn.removeClass("disabled").css("pointer-events", "");
+      }
+
       // Reset quantity
       $modal.find(".quantity-product").val(1);
       $modal.find(".quantity-product-hidden").val(1);
