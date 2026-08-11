@@ -982,3 +982,35 @@ function woosaree_render_mobile_menu()
 	}
 }
 
+/**
+ * Customize WordPress login page logo and URL.
+ */
+function woosaree_custom_login_logo() {
+	?>
+	<style type="text/css">
+		#login h1 a, .login h1 a {
+			background-image: url('<?php echo esc_url( get_stylesheet_directory_uri() . '/images/avon-logo.svg' ); ?>');
+			height: 80px;
+			width: 100%;
+			max-width: 320px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			padding-bottom: 20px;
+		}
+	</style>
+	<?php
+}
+add_action( 'login_enqueue_scripts', 'woosaree_custom_login_logo' );
+
+function woosaree_custom_login_logo_url() {
+	return home_url();
+}
+add_filter( 'login_headerurl', 'woosaree_custom_login_logo_url' );
+
+function woosaree_custom_login_logo_url_title() {
+	return get_bloginfo( 'name' );
+}
+add_filter( 'login_headertext', 'woosaree_custom_login_logo_url_title' );
+add_filter( 'login_headertitle', 'woosaree_custom_login_logo_url_title' );
+
