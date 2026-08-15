@@ -25245,3 +25245,222 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 .whatsapp-icon {
   margin-top: 13px;
 }
+
+/* =========================================================
+   Checkout Page — Container & layout fixes
+   ========================================================= */
+.tf-page-checkout-section {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.tf-page-checkout-section .container {
+  max-width: 900px;
+}
+
+/* Prevent WooCommerce checkout inputs from overflowing on mobile */
+@media only screen and (max-width: 767px) {
+  .tf-page-checkout-section {
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+
+  .tf-page-checkout-section .woocommerce-checkout,
+  .tf-page-checkout-section .woocommerce {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .tf-page-checkout-section input,
+  .tf-page-checkout-section select,
+  .tf-page-checkout-section textarea {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+
+/* =========================================================
+   Cart Page — Heading spacing fix
+   ========================================================= */
+.tf-page-title--cart {
+  padding: 30px 0 28px;
+}
+
+.tf-page-title--cart .heading {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 767px) {
+  .tf-page-title--cart {
+    padding: 20px 0 18px;
+  }
+
+  .tf-page-title--cart .heading {
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+
+/* =========================================================
+   Cart Page — Mobile responsive table → card layout
+   ========================================================= */
+@media only screen and (max-width: 767px) {
+
+  /* Stack item + totals panel vertically */
+  .tf-page-cart-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Hide the desktop thead */
+  .tf-table-page-cart thead {
+    display: none;
+  }
+
+  /* Each <tr> becomes a card */
+  .tf-table-page-cart,
+  .tf-table-page-cart tbody,
+  .tf-table-page-cart tr {
+    display: block;
+    width: 100%;
+  }
+
+  .tf-table-page-cart tr.tf-cart-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    column-gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px dashed var(--line);
+    position: relative;
+  }
+
+  /* Product cell spans both columns in row 1 */
+  .tf-table-page-cart td.tf-cart-item_product {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    padding: 0 0 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  /* Image */
+  .tf-cart-item .tf-cart-item_product .img-box {
+    width: 72px;
+    min-width: 72px;
+    max-height: 96px;
+    margin-right: 0;
+  }
+
+  /* Price cell — row 2 left */
+  .tf-table-page-cart td.tf-cart-item_price {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 6px 0;
+    text-align: left;
+  }
+
+  .tf-table-page-cart td.tf-cart-item_price::before {
+    content: attr(cart-data-title) ": ";
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    display: block;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* Quantity cell — row 2 right */
+  .tf-table-page-cart td.tf-cart-item_quantity {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 6px 0;
+    text-align: left;
+  }
+
+  .tf-table-page-cart td.tf-cart-item_quantity::before {
+    content: attr(cart-data-title) ": ";
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    display: block;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* Total cell — row 3, full width */
+  .tf-table-page-cart td.tf-cart-item_total {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    padding: 6px 0 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tf-table-page-cart td.tf-cart-item_total::before {
+    content: attr(cart-data-title) ": ";
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* Reset td alignment overrides that break the card layout */
+  .tf-table-page-cart td:first-child,
+  .tf-table-page-cart td:last-child {
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+    width: auto;
+  }
+
+  /* Quantity stepper sizing */
+  .tf-cart-item .wg-quantity {
+    min-width: 80px;
+    width: 80px;
+    height: 28px;
+  }
+
+  .tf-cart-item .wg-quantity .btn-quantity {
+    width: 22px;
+    height: 28px;
+  }
+
+  .tf-cart-item .wg-quantity input {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  /* Centre quantity/price/total values within their cells */
+  .tf-cart-item .cart-quantity,
+  .tf-cart-item .cart-total,
+  .tf-cart-item .cart-price {
+    justify-content: flex-start;
+  }
+
+  /* Cart totals / footer panel — full width below the item list */
+  .tf-page-cart-footer {
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  .tf-cart-footer-inner {
+    position: static;
+  }
+
+  .tf-page-cart-checkout {
+    padding: 20px 15px;
+  }
+}
