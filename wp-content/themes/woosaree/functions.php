@@ -544,11 +544,12 @@ function woosaree_cart_fragments($fragments)
 	$fragments['div.tf-mini-cart-items'] = woosaree_render_mini_cart_items();
 	$subtotal = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_subtotal() : '';
 	$fragments['div.tf-totals-total-value'] = '<div class="tf-totals-total-value fw-6">' . $subtotal . '</div>';
-	$cart_wrap_html = woosaree_render_cart_wrap_fragment();
-	$fragments['section.flat-spacing-11'] = $cart_wrap_html;
-	$fragments['div.tf-page-cart-wrap'] = $cart_wrap_html;
+	// NOTE: 'section.flat-spacing-11' and 'div.tf-page-cart-wrap' were removed.
+	// Those selectors are not unique to the cart page — they also match homepage sections,
+	// causing the cart table HTML to be injected into the homepage body on every add-to-cart.
 	return $fragments;
 }
+
 
 /**
  * Output global woosaree_ajax script in head

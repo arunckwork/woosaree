@@ -320,19 +320,7 @@
     }
   };
 
-  /* button loading
-  -------------------------------------------------------------------------*/
-  var btnLoading = function () {
-    if ($(".tf-btn-loading").length) {
-      $(".tf-btn-loading").on("click", function (e) {
-        $(this).addClass("loading");
-        var $this = $(this);
-        setTimeout(function () {
-          $this.removeClass("loading");
-        }, 600);
-      });
-    }
-  };
+
 
   /* variant picker
   -------------------------------------------------------------------------*/
@@ -1342,7 +1330,7 @@ var totalVariant = function () {
     changeValue();
     footer();
     btnWishlist();
-    btnLoading();
+
     variantPicker();
     itemCheckbox();
     // infiniteScroll();
