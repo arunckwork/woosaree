@@ -348,8 +348,8 @@ get_header();
                                     src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/saree-pr/7/7-sare3.jpg"
                                     alt="image-gallery">
                             </div>
-                            <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
-                                    class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a>
+                            <!-- <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
+                                    class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a> -->
                         </div>
                     </div>
                     <div class="swiper-slide swiper-slide-next" style="width: 282.4px; margin-right: 7px;" role="group"
@@ -362,8 +362,8 @@ get_header();
                                     src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/saree-pr/1/saree-v4.jpg"
                                     alt="image-gallery">
                             </div>
-                            <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
-                                    class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a>
+                            <!-- <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
+                                    class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a> -->
                         </div>
                     </div>
                     <div class="swiper-slide" style="width: 282.4px; margin-right: 7px;" role="group"
@@ -376,8 +376,8 @@ get_header();
                                     src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/saree-pr/3/3-saree-v8.jpg"
                                     alt="image-gallery">
                             </div>
-                            <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
-                                    class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a>
+                            <!-- <a href="#quick_add" data-bs-toggle="modal" class="box-icon"><span
+                                    class="icon icon-bag"></span> <span class="tooltip">Quick Add</span></a> -->
                         </div>
                     </div>
                     <div class="swiper-slide" style="width: 282.4px; margin-right: 7px;" role="group"
@@ -390,8 +390,8 @@ get_header();
                                     src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/saree-pr/7/7-sare3.jpg"
                                     alt="image-gallery">
                             </div>
-                            <a href="product-detail.html" class="box-icon"><span class="icon icon-bag"></span>
-                                <span class="tooltip">View product</span></a>
+                            <!-- <a href="product-detail.html" class="box-icon"><span class="icon icon-bag"></span>
+                                <span class="tooltip">View product</span></a> -->
                         </div>
                     </div>
                     <div class="swiper-slide" style="width: 282.4px; margin-right: 7px;" role="group"
@@ -404,8 +404,8 @@ get_header();
                                     src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/saree-pr/1/saree-v4.jpg"
                                     alt="image-gallery">
                             </div>
-                            <a href="product-detail.html" class="box-icon"><span class="icon icon-bag"></span>
-                                <span class="tooltip">View product</span></a>
+                            <!-- <a href="product-detail.html" class="box-icon"><span class="icon icon-bag"></span>
+                                <span class="tooltip">View product</span></a> -->
                         </div>
                     </div>
                     <div class="swiper-slide" style="width: 282.4px; margin-right: 7px;" role="group"
@@ -418,8 +418,8 @@ get_header();
                                     src="<?php echo get_stylesheet_directory_uri(); ?>/images/sree-img/img/saree-pr/5/5-saree-v5.jpg"
                                     alt="image-gallery">
                             </div>
-                            <a href="product-detail.html" class="box-icon"><span class="icon icon-bag"></span>
-                                <span class="tooltip">View product</span></a>
+                            <!-- <a href="product-detail.html" class="box-icon"><span class="icon icon-bag"></span>
+                                <span class="tooltip">View product</span></a> -->
                         </div>
                     </div>
                 </div>

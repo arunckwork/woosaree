@@ -104,7 +104,7 @@
                             <div class="tf-collapse-content">
                                 <div class="footer-menu_item">Sign up to get first dibs on new arrivals, sales,
                                     exclusive content, events and more!</div>
-                                <div class="sib-form">
+                                <!-- <div class="sib-form">
                                     <div id="sib-form-container" class="sib-form-container">
                                         <div id="error-message" class="sib-form-message-panel">
                                             <div
@@ -124,7 +124,7 @@
                                         </div>
 
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
                         </div>
