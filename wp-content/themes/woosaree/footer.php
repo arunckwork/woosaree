@@ -179,7 +179,7 @@
 <!-- toolbar-bottom -->
 <div class="tf-toolbar-bottom type-1150">
     <div class="toolbar-item">
-        <a href="#toolbarShopmb" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft">
+        <a href="<?php echo esc_url(get_post_type_archive_link('product') ?: home_url('/shop/')); ?>">
             <div class="toolbar-icon">
                 <i class="icon-shop"></i>
             </div>
@@ -187,23 +187,23 @@
         </a>
     </div>
 
-    <div class="toolbar-item">
+    <!-- <div class="toolbar-item">
         <a href="#canvasSearch" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft">
             <div class="toolbar-icon">
                 <i class="icon-search"></i>
             </div>
             <div class="toolbar-label">Search</div>
         </a>
-    </div>
-    <div class="toolbar-item">
+    </div> -->
+    <!-- <div class="toolbar-item">
         <a href="#login" data-bs-toggle="modal">
             <div class="toolbar-icon">
                 <i class="icon-account"></i>
             </div>
             <div class="toolbar-label">Account</div>
         </a>
-    </div>
-    <div class="toolbar-item">
+    </div> -->
+    <!-- <div class="toolbar-item">
         <a href="wishlist.html">
             <div class="toolbar-icon">
                 <i class="icon-heart"></i>
@@ -211,7 +211,7 @@
             </div>
             <div class="toolbar-label">Wishlist</div>
         </a>
-    </div>
+    </div> -->
     <div class="toolbar-item">
         <a href="#shoppingCart" data-bs-toggle="modal">
             <div class="toolbar-icon">
